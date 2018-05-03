@@ -1,6 +1,8 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
@@ -13,16 +15,6 @@
     "lib": [
       "es2017",
       "dom"
-    ],
-    "baseUrl": ".",
-    "paths": {
-      "@meme-market/*": [
-        "libs/*"
-      ]
-    }
-  },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+    ]
+  }
 }
