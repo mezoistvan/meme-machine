@@ -1,0 +1,722 @@
+{
+  "contractName": "ERC721Metadata",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "name",
+      "outputs": [
+        {
+          "name": "_name",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "symbol",
+      "outputs": [
+        {
+          "name": "_symbol",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_deedId",
+          "type": "uint256"
+        }
+      ],
+      "name": "deedName",
+      "outputs": [
+        {
+          "name": "_deedName",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_deedId",
+          "type": "uint256"
+        }
+      ],
+      "name": "deedUri",
+      "outputs": [
+        {
+          "name": "_deedUri",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "pragma solidity ^0.4.18;\r\n\r\n/// @title Metadata extension to ERC-721 interface\r\n/// @author William Entriken (https://phor.net)\r\n/// @dev Specification at https://github.com/ethereum/eips/issues/XXXX\r\n\r\ninterface ERC721Metadata {\r\n\r\n    /// @dev ERC-165 (draft) interface signature for ERC721\r\n    // bytes4 internal constant INTERFACE_SIGNATURE_ERC721Metadata = // 0x2a786f11\r\n    //     bytes4(keccak256('name()')) ^\r\n    //     bytes4(keccak256('symbol()')) ^\r\n    //     bytes4(keccak256('deedUri(uint256)'));\r\n\r\n    /// @notice A descriptive name for a collection of deeds managed by this\r\n    ///  contract\r\n    /// @dev Wallets and exchanges MAY display this to the end user.\r\n    function name() public pure returns (string _name);\r\n\r\n    /// @notice An abbreviated name for deeds managed by this contract\r\n    /// @dev Wallets and exchanges MAY display this to the end user.\r\n    function symbol() public pure returns (string _symbol);\r\n\r\n    /// @notice A distinct name for a deed managed by this contract\r\n    /// @dev Wallets and exchanges MAY display this to the end user.\r\n    function deedName(uint256 _deedId) public pure returns (string _deedName);\r\n\r\n    /// @notice A distinct URI (RFC 3986) for a given token.\r\n    /// @dev If:\r\n    ///  * The URI is a URL\r\n    ///  * The URL is accessible\r\n    ///  * The URL points to a valid JSON file format (ECMA-404 2nd ed.)\r\n    ///  * The JSON base element is an object\r\n    ///  then these names of the base element SHALL have special meaning:\r\n    ///  * \"name\": A string identifying the item to which `_deedId` grants\r\n    ///    ownership\r\n    ///  * \"description\": A string detailing the item to which `_deedId` grants\r\n    ///    ownership\r\n    ///  * \"image\": A URI pointing to a file of image/* mime type representing\r\n    ///    the item to which `_deedId` grants ownership\r\n    ///  Wallets and exchanges MAY display this to the end user.\r\n    ///  Consider making any images at a width between 320 and 1080 pixels and\r\n    ///  aspect ratio between 1.91:1 and 4:5 inclusive.\r\n    function deedUri(uint256 _deedId) external view returns (string _deedUri);\r\n}\r\n",
+  "sourcePath": "/mnt/c/meme-machine/contracts/ERC721Metadata.sol",
+  "ast": {
+    "absolutePath": "/mnt/c/meme-machine/contracts/ERC721Metadata.sol",
+    "exportedSymbols": {
+      "ERC721Metadata": [
+        630
+      ]
+    },
+    "id": 631,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 605,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".18"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:2"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": "@title Metadata extension to ERC-721 interface\r\n @author William Entriken (https://phor.net)\r\n @dev Specification at https://github.com/ethereum/eips/issues/XXXX\r",
+        "fullyImplemented": false,
+        "id": 630,
+        "linearizedBaseContracts": [
+          630
+        ],
+        "name": "ERC721Metadata",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": "@notice A descriptive name for a collection of deeds managed by this\r\n  contract\r\n @dev Wallets and exchanges MAY display this to the end user.\r",
+            "id": 610,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "name",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 606,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "701:2:2"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 609,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 608,
+                  "name": "_name",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 610,
+                  "src": "725:12:2",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string memory"
+                  },
+                  "typeName": {
+                    "id": 607,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "725:6:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string storage pointer"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "724:14:2"
+            },
+            "scope": 630,
+            "src": "688:51:2",
+            "stateMutability": "pure",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": null,
+            "documentation": "@notice An abbreviated name for deeds managed by this contract\r\n @dev Wallets and exchanges MAY display this to the end user.\r",
+            "id": 615,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "symbol",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 611,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "904:2:2"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 614,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 613,
+                  "name": "_symbol",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 615,
+                  "src": "928:14:2",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string memory"
+                  },
+                  "typeName": {
+                    "id": 612,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "928:6:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string storage pointer"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "927:16:2"
+            },
+            "scope": 630,
+            "src": "889:55:2",
+            "stateMutability": "pure",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": null,
+            "documentation": "@notice A distinct name for a deed managed by this contract\r\n @dev Wallets and exchanges MAY display this to the end user.\r",
+            "id": 622,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "deedName",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 618,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 617,
+                  "name": "_deedId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 622,
+                  "src": "1109:15:2",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 616,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1109:7:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1108:17:2"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 621,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 620,
+                  "name": "_deedName",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 622,
+                  "src": "1147:16:2",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string memory"
+                  },
+                  "typeName": {
+                    "id": 619,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1147:6:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string storage pointer"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1146:18:2"
+            },
+            "scope": 630,
+            "src": "1091:74:2",
+            "stateMutability": "pure",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": null,
+            "documentation": "@notice A distinct URI (RFC 3986) for a given token.\r\n @dev If:\r\n  * The URI is a URL\r\n  * The URL is accessible\r\n  * The URL points to a valid JSON file format (ECMA-404 2nd ed.)\r\n  * The JSON base element is an object\r\n  then these names of the base element SHALL have special meaning:\r\n  * \"name\": A string identifying the item to which `_deedId` grants\r\n    ownership\r\n  * \"description\": A string detailing the item to which `_deedId` grants\r\n    ownership\r\n  * \"image\": A URI pointing to a file of image/* mime type representing\r\n    the item to which `_deedId` grants ownership\r\n  Wallets and exchanges MAY display this to the end user.\r\n  Consider making any images at a width between 320 and 1080 pixels and\r\n  aspect ratio between 1.91:1 and 4:5 inclusive.\r",
+            "id": 629,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "deedUri",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 625,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 624,
+                  "name": "_deedId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 629,
+                  "src": "2070:15:2",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 623,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2070:7:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2069:17:2"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 628,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 627,
+                  "name": "_deedUri",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 629,
+                  "src": "2110:15:2",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string memory"
+                  },
+                  "typeName": {
+                    "id": 626,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2110:6:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string storage pointer"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2109:17:2"
+            },
+            "scope": 630,
+            "src": "2053:74:2",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          }
+        ],
+        "scope": 631,
+        "src": "203:1927:2"
+      }
+    ],
+    "src": "0:2132:2"
+  },
+  "legacyAST": {
+    "absolutePath": "/mnt/c/meme-machine/contracts/ERC721Metadata.sol",
+    "exportedSymbols": {
+      "ERC721Metadata": [
+        630
+      ]
+    },
+    "id": 631,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 605,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".18"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:2"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": "@title Metadata extension to ERC-721 interface\r\n @author William Entriken (https://phor.net)\r\n @dev Specification at https://github.com/ethereum/eips/issues/XXXX\r",
+        "fullyImplemented": false,
+        "id": 630,
+        "linearizedBaseContracts": [
+          630
+        ],
+        "name": "ERC721Metadata",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": "@notice A descriptive name for a collection of deeds managed by this\r\n  contract\r\n @dev Wallets and exchanges MAY display this to the end user.\r",
+            "id": 610,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "name",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 606,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "701:2:2"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 609,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 608,
+                  "name": "_name",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 610,
+                  "src": "725:12:2",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string memory"
+                  },
+                  "typeName": {
+                    "id": 607,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "725:6:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string storage pointer"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "724:14:2"
+            },
+            "scope": 630,
+            "src": "688:51:2",
+            "stateMutability": "pure",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": null,
+            "documentation": "@notice An abbreviated name for deeds managed by this contract\r\n @dev Wallets and exchanges MAY display this to the end user.\r",
+            "id": 615,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "symbol",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 611,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "904:2:2"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 614,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 613,
+                  "name": "_symbol",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 615,
+                  "src": "928:14:2",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string memory"
+                  },
+                  "typeName": {
+                    "id": 612,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "928:6:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string storage pointer"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "927:16:2"
+            },
+            "scope": 630,
+            "src": "889:55:2",
+            "stateMutability": "pure",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": null,
+            "documentation": "@notice A distinct name for a deed managed by this contract\r\n @dev Wallets and exchanges MAY display this to the end user.\r",
+            "id": 622,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "deedName",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 618,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 617,
+                  "name": "_deedId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 622,
+                  "src": "1109:15:2",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 616,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1109:7:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1108:17:2"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 621,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 620,
+                  "name": "_deedName",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 622,
+                  "src": "1147:16:2",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string memory"
+                  },
+                  "typeName": {
+                    "id": 619,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1147:6:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string storage pointer"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1146:18:2"
+            },
+            "scope": 630,
+            "src": "1091:74:2",
+            "stateMutability": "pure",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": null,
+            "documentation": "@notice A distinct URI (RFC 3986) for a given token.\r\n @dev If:\r\n  * The URI is a URL\r\n  * The URL is accessible\r\n  * The URL points to a valid JSON file format (ECMA-404 2nd ed.)\r\n  * The JSON base element is an object\r\n  then these names of the base element SHALL have special meaning:\r\n  * \"name\": A string identifying the item to which `_deedId` grants\r\n    ownership\r\n  * \"description\": A string detailing the item to which `_deedId` grants\r\n    ownership\r\n  * \"image\": A URI pointing to a file of image/* mime type representing\r\n    the item to which `_deedId` grants ownership\r\n  Wallets and exchanges MAY display this to the end user.\r\n  Consider making any images at a width between 320 and 1080 pixels and\r\n  aspect ratio between 1.91:1 and 4:5 inclusive.\r",
+            "id": 629,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "deedUri",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 625,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 624,
+                  "name": "_deedId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 629,
+                  "src": "2070:15:2",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 623,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2070:7:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2069:17:2"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 628,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 627,
+                  "name": "_deedUri",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 629,
+                  "src": "2110:15:2",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string memory"
+                  },
+                  "typeName": {
+                    "id": 626,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2110:6:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string storage pointer"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2109:17:2"
+            },
+            "scope": 630,
+            "src": "2053:74:2",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          }
+        ],
+        "scope": 631,
+        "src": "203:1927:2"
+      }
+    ],
+    "src": "0:2132:2"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.21+commit.dfe3193c.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "2.0.0",
+  "updatedAt": "2018-04-02T17:29:19.958Z"
+}

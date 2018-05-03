@@ -1,0 +1,26 @@
+{
+  "name": "meme-machine",
+  "version": "0.0.1",
+  "description": "Marketplace for memes in form of non-fungilble tokens",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Ethereum",
+    "Memes",
+    "ERC-721",
+    "NFT",
+    "Non-fungible",
+    "Marketplace"
+  ],
+  "author": "Istvan Mezo",
+  "license": "MIT",
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "babel-register": "^6.26.0",
+    "truffle": "^4.1.5",
+    "truffle-hdwallet-provider": "0.0.3",
+    "web3": "^1.0.0-beta.33"
+  }
+}

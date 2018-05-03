@@ -1,0 +1,1758 @@
+{
+  "contractName": "ERC721",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "_from",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "_to",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "_deedId",
+          "type": "uint256"
+        }
+      ],
+      "name": "Transfer",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "_owner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "_approved",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "_deedId",
+          "type": "uint256"
+        }
+      ],
+      "name": "Approval",
+      "type": "event"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_interfaceID",
+          "type": "bytes4"
+        }
+      ],
+      "name": "supportsInterface",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_deedId",
+          "type": "uint256"
+        }
+      ],
+      "name": "ownerOf",
+      "outputs": [
+        {
+          "name": "_owner",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "countOfDeeds",
+      "outputs": [
+        {
+          "name": "_count",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_owner",
+          "type": "address"
+        }
+      ],
+      "name": "countOfDeedsByOwner",
+      "outputs": [
+        {
+          "name": "_count",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_owner",
+          "type": "address"
+        },
+        {
+          "name": "_index",
+          "type": "uint256"
+        }
+      ],
+      "name": "deedOfOwnerByIndex",
+      "outputs": [
+        {
+          "name": "_deedId",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_to",
+          "type": "address"
+        },
+        {
+          "name": "_deedId",
+          "type": "uint256"
+        }
+      ],
+      "name": "approve",
+      "outputs": [],
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_deedId",
+          "type": "uint256"
+        }
+      ],
+      "name": "takeOwnership",
+      "outputs": [],
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "pragma solidity ^0.4.18;\r\n\r\n/// @title Interface for contracts conforming to ERC-721: Deed Standard\r\n/// @author William Entriken (https://phor.net), et. al.\r\n/// Slightly altered by Nastassia Sachs (https://github.com/nastassiasachs)\r\n/// @dev Specification at https://github.com/ethereum/eips/XXXFinalUrlXXX\r\n\r\ninterface ERC721 {\r\n\r\n    // COMPLIANCE WITH ERC-165 (DRAFT) /////////////////////////////////////////\r\n\r\n    /// @dev ERC-165 (draft) interface signature for itself\r\n    // bytes4 internal constant INTERFACE_SIGNATURE_ERC165 = // 0x01ffc9a7\r\n    //     bytes4(keccak256('supportsInterface(bytes4)'));\r\n\r\n    /// @dev ERC-165 (draft) interface signature for ERC721\r\n    // bytes4 internal constant INTERFACE_SIGNATURE_ERC721 = // 0xda671b9b\r\n    //     bytes4(keccak256('ownerOf(uint256)')) ^\r\n    //     bytes4(keccak256('countOfDeeds()')) ^\r\n    //     bytes4(keccak256('countOfDeedsByOwner(address)')) ^\r\n    //     bytes4(keccak256('deedOfOwnerByIndex(address,uint256)')) ^\r\n    //     bytes4(keccak256('approve(address,uint256)')) ^\r\n    //     bytes4(keccak256('takeOwnership(uint256)'));\r\n\r\n    /// @notice Query a contract to see if it supports a certain interface\r\n    /// @dev Returns `true` the interface is supported and `false` otherwise,\r\n    ///  returns `true` for INTERFACE_SIGNATURE_ERC165 and\r\n    ///  INTERFACE_SIGNATURE_ERC721, see ERC-165 for other interface signatures.\r\n    function supportsInterface(bytes4 _interfaceID) external pure returns (bool);\r\n\r\n    // PUBLIC QUERY FUNCTIONS //////////////////////////////////////////////////\r\n\r\n    /// @notice Find the owner of a deed\r\n    /// @param _deedId The identifier for a deed we are inspecting\r\n    /// @dev Deeds assigned to zero address are considered invalid, and\r\n    ///  queries about them do throw.\r\n    /// @return The non-zero address of the owner of deed `_deedId`, or `throw`\r\n    ///  if deed `_deedId` is not tracked by this contract\r\n    function ownerOf(uint256 _deedId) external view returns (address _owner);\r\n\r\n    /// @notice Count deeds tracked by this contract\r\n    /// @return A count of valid deeds tracked by this contract, where each one of\r\n    ///  them has an assigned and queryable owner not equal to the zero address\r\n    function countOfDeeds() external view returns (uint256 _count);\r\n\r\n    /// @notice Count all deeds assigned to an owner\r\n    /// @dev Throws if `_owner` is the zero address, representing invalid deeds.\r\n    /// @param _owner An address where we are interested in deeds owned by them\r\n    /// @return The number of deeds owned by `_owner`, possibly zero\r\n    function countOfDeedsByOwner(address _owner) external view returns (uint256 _count);\r\n\r\n    /// @notice Enumerate deeds assigned to an owner\r\n    /// @dev Throws if `_index` >= `countOfDeedsByOwner(_owner)` or if\r\n    ///  `_owner` is the zero address, representing invalid deeds.\r\n    /// @param _owner An address where we are interested in deeds owned by them\r\n    /// @param _index A counter less than `countOfDeedsByOwner(_owner)`\r\n    /// @return The identifier for the `_index`th deed assigned to `_owner`,\r\n    ///   (sort order not specified)\r\n    function deedOfOwnerByIndex(address _owner, uint256 _index) external view returns (uint256 _deedId);\r\n\r\n    // TRANSFER MECHANISM //////////////////////////////////////////////////////\r\n\r\n    /// @dev This event emits when ownership of any deed changes by any\r\n    ///  mechanism. This event emits when deeds are created (`from` == 0) and\r\n    ///  destroyed (`to` == 0). Exception: during contract creation, any\r\n    ///  transfers may occur without emitting `Transfer`. At the time of any transfer,\r\n    ///  the \"approved taker\" is implicitly reset to the zero address.\r\n    event Transfer(address indexed _from, address indexed _to, uint256 indexed _deedId);\r\n\r\n    /// @dev The Approve event emits to log the \"approved taker\" for a deed -- whether\r\n    ///  set for the first time, reaffirmed by setting the same value, or setting to\r\n    ///  a new value. The \"approved taker\" is the zero address if nobody can take the\r\n    ///  deed now or it is an address if that address can call `takeOwnership` to attempt\r\n    ///  taking the deed. Any change to the \"approved taker\" for a deed SHALL cause\r\n    ///  Approve to emit. However, an exception, the Approve event will not emit when\r\n    ///  Transfer emits, this is because Transfer implicitly denotes the \"approved taker\"\r\n    ///  is reset to the zero address.\r\n    event Approval(address indexed _owner, address indexed _approved, uint256 indexed _deedId);\r\n\r\n    /// @notice Set the \"approved taker\" for your deed, or revoke approval by\r\n    ///  setting the zero address. You may `approve` any number of times while\r\n    ///  the deed is assigned to you, only the most recent approval matters. Emits\r\n    ///  an Approval event.\r\n    /// @dev Throws if `msg.sender` does not own deed `_deedId` or if `_to` ==\r\n    ///  `msg.sender` or if `_deedId` is not a valid deed.\r\n    /// @param _deedId The deed for which you are granting approval\r\n    function approve(address _to, uint256 _deedId) external payable;\r\n\r\n    /// @notice Become owner of a deed for which you are currently approved\r\n    /// @dev Throws if `msg.sender` is not approved to become the owner of\r\n    ///  `deedId` or if `msg.sender` currently owns `_deedId` or if `_deedId is not a\r\n    ///  valid deed.\r\n    /// @param _deedId The deed that is being transferred\r\n    function takeOwnership(uint256 _deedId) external payable;\r\n}\r\n",
+  "sourcePath": "/mnt/c/meme-machine/contracts/ERC721.sol",
+  "ast": {
+    "absolutePath": "/mnt/c/meme-machine/contracts/ERC721.sol",
+    "exportedSymbols": {
+      "ERC721": [
+        65
+      ]
+    },
+    "id": 66,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".18"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:0"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": "@title Interface for contracts conforming to ERC-721: Deed Standard\r\n @author William Entriken (https://phor.net), et. al.\r\n Slightly altered by Nastassia Sachs (https://github.com/nastassiasachs)\r\n @dev Specification at https://github.com/ethereum/eips/XXXFinalUrlXXX\r",
+        "fullyImplemented": false,
+        "id": 65,
+        "linearizedBaseContracts": [
+          65
+        ],
+        "name": "ERC721",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": "@notice Query a contract to see if it supports a certain interface\r\n @dev Returns `true` the interface is supported and `false` otherwise,\r\n  returns `true` for INTERFACE_SIGNATURE_ERC165 and\r\n  INTERFACE_SIGNATURE_ERC721, see ERC-165 for other interface signatures.\r",
+            "id": 8,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "supportsInterface",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3,
+                  "name": "_interfaceID",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8,
+                  "src": "1439:19:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes4",
+                    "typeString": "bytes4"
+                  },
+                  "typeName": {
+                    "id": 2,
+                    "name": "bytes4",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1439:6:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes4",
+                      "typeString": "bytes4"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1438:21:0"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 7,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 6,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8,
+                  "src": "1483:4:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 5,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1483:4:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1482:6:0"
+            },
+            "scope": 65,
+            "src": "1412:77:0",
+            "stateMutability": "pure",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@notice Find the owner of a deed\r\n @param _deedId The identifier for a deed we are inspecting\r\n @dev Deeds assigned to zero address are considered invalid, and\r\n  queries about them do throw.\r\n @return The non-zero address of the owner of deed `_deedId`, or `throw`\r\n  if deed `_deedId` is not tracked by this contract\r",
+            "id": 15,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "ownerOf",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 11,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 10,
+                  "name": "_deedId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 15,
+                  "src": "1961:15:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 9,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1961:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1960:17:0"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 14,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 13,
+                  "name": "_owner",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 15,
+                  "src": "2001:14:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 12,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2001:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2000:16:0"
+            },
+            "scope": 65,
+            "src": "1944:73:0",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@notice Count deeds tracked by this contract\r\n @return A count of valid deeds tracked by this contract, where each one of\r\n  them has an assigned and queryable owner not equal to the zero address\r",
+            "id": 20,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "countOfDeeds",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 16,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2265:2:0"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 19,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 18,
+                  "name": "_count",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 20,
+                  "src": "2291:14:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 17,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2291:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2290:16:0"
+            },
+            "scope": 65,
+            "src": "2244:63:0",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@notice Count all deeds assigned to an owner\r\n @dev Throws if `_owner` is the zero address, representing invalid deeds.\r\n @param _owner An address where we are interested in deeds owned by them\r\n @return The number of deeds owned by `_owner`, possibly zero\r",
+            "id": 27,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "countOfDeedsByOwner",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 23,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 22,
+                  "name": "_owner",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 27,
+                  "src": "2631:14:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 21,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2631:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2630:16:0"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 26,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 25,
+                  "name": "_count",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 27,
+                  "src": "2670:14:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 24,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2670:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2669:16:0"
+            },
+            "scope": 65,
+            "src": "2602:84:0",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@notice Enumerate deeds assigned to an owner\r\n @dev Throws if `_index` >= `countOfDeedsByOwner(_owner)` or if\r\n  `_owner` is the zero address, representing invalid deeds.\r\n @param _owner An address where we are interested in deeds owned by them\r\n @param _index A counter less than `countOfDeedsByOwner(_owner)`\r\n @return The identifier for the `_index`th deed assigned to `_owner`,\r\n   (sort order not specified)\r",
+            "id": 36,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "deedOfOwnerByIndex",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 32,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 29,
+                  "name": "_owner",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36,
+                  "src": "3186:14:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 28,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3186:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 31,
+                  "name": "_index",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36,
+                  "src": "3202:14:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 30,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3202:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3185:32:0"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 35,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 34,
+                  "name": "_deedId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36,
+                  "src": "3241:15:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 33,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3241:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3240:17:0"
+            },
+            "scope": 65,
+            "src": "3158:100:0",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "anonymous": false,
+            "documentation": "@dev This event emits when ownership of any deed changes by any\r\n  mechanism. This event emits when deeds are created (`from` == 0) and\r\n  destroyed (`to` == 0). Exception: during contract creation, any\r\n  transfers may occur without emitting `Transfer`. At the time of any transfer,\r\n  the \"approved taker\" is implicitly reset to the zero address.\r",
+            "id": 44,
+            "name": "Transfer",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 43,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 38,
+                  "indexed": true,
+                  "name": "_from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 44,
+                  "src": "3751:21:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 37,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3751:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 40,
+                  "indexed": true,
+                  "name": "_to",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 44,
+                  "src": "3774:19:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 39,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3774:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 42,
+                  "indexed": true,
+                  "name": "_deedId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 44,
+                  "src": "3795:23:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 41,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3795:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3750:69:0"
+            },
+            "src": "3736:84:0"
+          },
+          {
+            "anonymous": false,
+            "documentation": "@dev The Approve event emits to log the \"approved taker\" for a deed -- whether\r\n  set for the first time, reaffirmed by setting the same value, or setting to\r\n  a new value. The \"approved taker\" is the zero address if nobody can take the\r\n  deed now or it is an address if that address can call `takeOwnership` to attempt\r\n  taking the deed. Any change to the \"approved taker\" for a deed SHALL cause\r\n  Approve to emit. However, an exception, the Approve event will not emit when\r\n  Transfer emits, this is because Transfer implicitly denotes the \"approved taker\"\r\n  is reset to the zero address.\r",
+            "id": 52,
+            "name": "Approval",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 51,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 46,
+                  "indexed": true,
+                  "name": "_owner",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 52,
+                  "src": "4498:22:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 45,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "4498:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48,
+                  "indexed": true,
+                  "name": "_approved",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 52,
+                  "src": "4522:25:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 47,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "4522:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 50,
+                  "indexed": true,
+                  "name": "_deedId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 52,
+                  "src": "4549:23:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 49,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "4549:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "4497:76:0"
+            },
+            "src": "4483:91:0"
+          },
+          {
+            "body": null,
+            "documentation": "@notice Set the \"approved taker\" for your deed, or revoke approval by\r\n  setting the zero address. You may `approve` any number of times while\r\n  the deed is assigned to you, only the most recent approval matters. Emits\r\n  an Approval event.\r\n @dev Throws if `msg.sender` does not own deed `_deedId` or if `_to` ==\r\n  `msg.sender` or if `_deedId` is not a valid deed.\r\n @param _deedId The deed for which you are granting approval\r",
+            "id": 59,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "approve",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 57,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54,
+                  "name": "_to",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 59,
+                  "src": "5080:11:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 53,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5080:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 56,
+                  "name": "_deedId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 59,
+                  "src": "5093:15:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 55,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5093:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "5079:30:0"
+            },
+            "payable": true,
+            "returnParameters": {
+              "id": 58,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "5126:0:0"
+            },
+            "scope": 65,
+            "src": "5063:64:0",
+            "stateMutability": "payable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@notice Become owner of a deed for which you are currently approved\r\n @dev Throws if `msg.sender` is not approved to become the owner of\r\n  `deedId` or if `msg.sender` currently owns `_deedId` or if `_deedId is not a\r\n  valid deed.\r\n @param _deedId The deed that is being transferred\r",
+            "id": 64,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "takeOwnership",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 62,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 61,
+                  "name": "_deedId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 64,
+                  "src": "5479:15:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 60,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5479:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "5478:17:0"
+            },
+            "payable": true,
+            "returnParameters": {
+              "id": 63,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "5512:0:0"
+            },
+            "scope": 65,
+            "src": "5456:57:0",
+            "stateMutability": "payable",
+            "superFunction": null,
+            "visibility": "external"
+          }
+        ],
+        "scope": 66,
+        "src": "313:5203:0"
+      }
+    ],
+    "src": "0:5518:0"
+  },
+  "legacyAST": {
+    "absolutePath": "/mnt/c/meme-machine/contracts/ERC721.sol",
+    "exportedSymbols": {
+      "ERC721": [
+        65
+      ]
+    },
+    "id": 66,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".18"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:0"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": "@title Interface for contracts conforming to ERC-721: Deed Standard\r\n @author William Entriken (https://phor.net), et. al.\r\n Slightly altered by Nastassia Sachs (https://github.com/nastassiasachs)\r\n @dev Specification at https://github.com/ethereum/eips/XXXFinalUrlXXX\r",
+        "fullyImplemented": false,
+        "id": 65,
+        "linearizedBaseContracts": [
+          65
+        ],
+        "name": "ERC721",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": "@notice Query a contract to see if it supports a certain interface\r\n @dev Returns `true` the interface is supported and `false` otherwise,\r\n  returns `true` for INTERFACE_SIGNATURE_ERC165 and\r\n  INTERFACE_SIGNATURE_ERC721, see ERC-165 for other interface signatures.\r",
+            "id": 8,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "supportsInterface",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3,
+                  "name": "_interfaceID",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8,
+                  "src": "1439:19:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes4",
+                    "typeString": "bytes4"
+                  },
+                  "typeName": {
+                    "id": 2,
+                    "name": "bytes4",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1439:6:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes4",
+                      "typeString": "bytes4"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1438:21:0"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 7,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 6,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8,
+                  "src": "1483:4:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 5,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1483:4:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1482:6:0"
+            },
+            "scope": 65,
+            "src": "1412:77:0",
+            "stateMutability": "pure",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@notice Find the owner of a deed\r\n @param _deedId The identifier for a deed we are inspecting\r\n @dev Deeds assigned to zero address are considered invalid, and\r\n  queries about them do throw.\r\n @return The non-zero address of the owner of deed `_deedId`, or `throw`\r\n  if deed `_deedId` is not tracked by this contract\r",
+            "id": 15,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "ownerOf",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 11,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 10,
+                  "name": "_deedId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 15,
+                  "src": "1961:15:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 9,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1961:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1960:17:0"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 14,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 13,
+                  "name": "_owner",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 15,
+                  "src": "2001:14:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 12,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2001:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2000:16:0"
+            },
+            "scope": 65,
+            "src": "1944:73:0",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@notice Count deeds tracked by this contract\r\n @return A count of valid deeds tracked by this contract, where each one of\r\n  them has an assigned and queryable owner not equal to the zero address\r",
+            "id": 20,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "countOfDeeds",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 16,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2265:2:0"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 19,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 18,
+                  "name": "_count",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 20,
+                  "src": "2291:14:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 17,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2291:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2290:16:0"
+            },
+            "scope": 65,
+            "src": "2244:63:0",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@notice Count all deeds assigned to an owner\r\n @dev Throws if `_owner` is the zero address, representing invalid deeds.\r\n @param _owner An address where we are interested in deeds owned by them\r\n @return The number of deeds owned by `_owner`, possibly zero\r",
+            "id": 27,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "countOfDeedsByOwner",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 23,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 22,
+                  "name": "_owner",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 27,
+                  "src": "2631:14:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 21,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2631:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2630:16:0"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 26,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 25,
+                  "name": "_count",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 27,
+                  "src": "2670:14:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 24,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2670:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2669:16:0"
+            },
+            "scope": 65,
+            "src": "2602:84:0",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@notice Enumerate deeds assigned to an owner\r\n @dev Throws if `_index` >= `countOfDeedsByOwner(_owner)` or if\r\n  `_owner` is the zero address, representing invalid deeds.\r\n @param _owner An address where we are interested in deeds owned by them\r\n @param _index A counter less than `countOfDeedsByOwner(_owner)`\r\n @return The identifier for the `_index`th deed assigned to `_owner`,\r\n   (sort order not specified)\r",
+            "id": 36,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "deedOfOwnerByIndex",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 32,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 29,
+                  "name": "_owner",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36,
+                  "src": "3186:14:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 28,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3186:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 31,
+                  "name": "_index",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36,
+                  "src": "3202:14:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 30,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3202:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3185:32:0"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 35,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 34,
+                  "name": "_deedId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36,
+                  "src": "3241:15:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 33,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3241:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3240:17:0"
+            },
+            "scope": 65,
+            "src": "3158:100:0",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "anonymous": false,
+            "documentation": "@dev This event emits when ownership of any deed changes by any\r\n  mechanism. This event emits when deeds are created (`from` == 0) and\r\n  destroyed (`to` == 0). Exception: during contract creation, any\r\n  transfers may occur without emitting `Transfer`. At the time of any transfer,\r\n  the \"approved taker\" is implicitly reset to the zero address.\r",
+            "id": 44,
+            "name": "Transfer",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 43,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 38,
+                  "indexed": true,
+                  "name": "_from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 44,
+                  "src": "3751:21:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 37,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3751:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 40,
+                  "indexed": true,
+                  "name": "_to",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 44,
+                  "src": "3774:19:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 39,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3774:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 42,
+                  "indexed": true,
+                  "name": "_deedId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 44,
+                  "src": "3795:23:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 41,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3795:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3750:69:0"
+            },
+            "src": "3736:84:0"
+          },
+          {
+            "anonymous": false,
+            "documentation": "@dev The Approve event emits to log the \"approved taker\" for a deed -- whether\r\n  set for the first time, reaffirmed by setting the same value, or setting to\r\n  a new value. The \"approved taker\" is the zero address if nobody can take the\r\n  deed now or it is an address if that address can call `takeOwnership` to attempt\r\n  taking the deed. Any change to the \"approved taker\" for a deed SHALL cause\r\n  Approve to emit. However, an exception, the Approve event will not emit when\r\n  Transfer emits, this is because Transfer implicitly denotes the \"approved taker\"\r\n  is reset to the zero address.\r",
+            "id": 52,
+            "name": "Approval",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 51,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 46,
+                  "indexed": true,
+                  "name": "_owner",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 52,
+                  "src": "4498:22:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 45,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "4498:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48,
+                  "indexed": true,
+                  "name": "_approved",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 52,
+                  "src": "4522:25:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 47,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "4522:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 50,
+                  "indexed": true,
+                  "name": "_deedId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 52,
+                  "src": "4549:23:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 49,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "4549:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "4497:76:0"
+            },
+            "src": "4483:91:0"
+          },
+          {
+            "body": null,
+            "documentation": "@notice Set the \"approved taker\" for your deed, or revoke approval by\r\n  setting the zero address. You may `approve` any number of times while\r\n  the deed is assigned to you, only the most recent approval matters. Emits\r\n  an Approval event.\r\n @dev Throws if `msg.sender` does not own deed `_deedId` or if `_to` ==\r\n  `msg.sender` or if `_deedId` is not a valid deed.\r\n @param _deedId The deed for which you are granting approval\r",
+            "id": 59,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "approve",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 57,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54,
+                  "name": "_to",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 59,
+                  "src": "5080:11:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 53,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5080:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 56,
+                  "name": "_deedId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 59,
+                  "src": "5093:15:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 55,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5093:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "5079:30:0"
+            },
+            "payable": true,
+            "returnParameters": {
+              "id": 58,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "5126:0:0"
+            },
+            "scope": 65,
+            "src": "5063:64:0",
+            "stateMutability": "payable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@notice Become owner of a deed for which you are currently approved\r\n @dev Throws if `msg.sender` is not approved to become the owner of\r\n  `deedId` or if `msg.sender` currently owns `_deedId` or if `_deedId is not a\r\n  valid deed.\r\n @param _deedId The deed that is being transferred\r",
+            "id": 64,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "takeOwnership",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 62,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 61,
+                  "name": "_deedId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 64,
+                  "src": "5479:15:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 60,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5479:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "5478:17:0"
+            },
+            "payable": true,
+            "returnParameters": {
+              "id": 63,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "5512:0:0"
+            },
+            "scope": 65,
+            "src": "5456:57:0",
+            "stateMutability": "payable",
+            "superFunction": null,
+            "visibility": "external"
+          }
+        ],
+        "scope": 66,
+        "src": "313:5203:0"
+      }
+    ],
+    "src": "0:5518:0"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.21+commit.dfe3193c.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "2.0.0",
+  "updatedAt": "2018-04-02T17:29:19.954Z"
+}

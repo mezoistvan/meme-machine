@@ -1,1 +1,3 @@
-# meme-machine
+# meme-market
+
+meme-market angular frontend app + smart contract
