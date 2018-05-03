@@ -1,1 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+
+body, html {
+  cursor: url(assets/cursor-normal.gif), auto;
+  margin: 0;
+}
+
+a:hover {
+  cursor: url(assets/cursor-pointer.gif), auto;
+}
