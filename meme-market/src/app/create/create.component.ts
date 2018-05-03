@@ -12,4 +12,5 @@ export class CreateComponent implements OnInit {
   ngOnInit() {
   }
 
+  // redditmedia imgur instagram
 }

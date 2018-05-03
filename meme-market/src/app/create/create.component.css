@@ -1,0 +1,72 @@
+.create {
+    min-width: 100%;
+    min-height: 100%;
+    display: flex;
+}
+
+.preview {
+    min-width: 50%;
+    min-height: 100%;
+    background-color: red;
+}
+
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.submit { 
+    color: white; 
+    font: bold 70px Helvetica, Arial, Sans-Serif;
+    text-shadow: 1px 1px #fe4902, 
+                 2px 2px #fe4902, 
+                 3px 3px #fe4902, 
+                 4px 4px #fe4902, 
+                 5px 5px #fe4902, 
+                 5px 5px #fe4902, 
+                 6px 6px #fe4902;
+    transition: all 0.12s ease-out;
+}
+.submit:hover {
+    font-size: 120px;
+    position: relative; 
+    top: -7px; 
+    left: -7px; 
+    text-shadow: 1px 1px #fe4902, 
+                 2px 2px #fe4902, 
+                 3px 3px #fe4902, 
+                 4px 4px #fe4902, 
+                 5px 5px #fe4902, 
+                 5px 5px #fe4902, 
+                 6px 6px #fe4902, 
+                 7px 7px #fe4902, 
+                 8px 8px #fe4902, 
+                 9px 9px #fe4902, 
+                 10px 10px #fe4902,
+                 11px 11px #fe4902,
+                 12px 12px #fe4902,
+                 13px 13px #fe4902,
+                 14px 14px #fe4902;
+}
+
+.name, .link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.name span, .link span {
+    font: 16px Helvetica, Arial, Sans-Serif;
+}
+
+.name input, .link input {
+    outline: 0;
+    border-width: 0 0 2px;
+    border-color: blue;
+    font: 70px Helvetica, Arial, Sans-Serif;
+    margin: 0 40px;
+    text-align: center;
+}

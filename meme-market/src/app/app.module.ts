@@ -7,11 +7,13 @@ import { HeaderComponent } from './header/header.component';
 import { BrowseComponent } from './browse/browse.component';
 import { CreateComponent } from './create/create.component';
 import { FooterComponent } from './footer/footer.component';
+import { OwnedComponent } from './owned/owned.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'browse', pathMatch: 'full' },
   { path: 'browse', component: BrowseComponent },
-  { path: 'create', component: CreateComponent }
+  { path: 'create', component: CreateComponent },
+  { path: 'owned', component: OwnedComponent }
 ];
 
 @NgModule({
@@ -20,7 +22,8 @@ const routes: Routes = [
     HeaderComponent,
     BrowseComponent,
     CreateComponent,
-    FooterComponent
+    FooterComponent,
+    OwnedComponent
   ],
   imports: [
     BrowserModule,

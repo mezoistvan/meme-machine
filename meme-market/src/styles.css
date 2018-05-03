@@ -3,8 +3,13 @@
 body, html {
   cursor: url(assets/cursor-normal.gif), auto;
   margin: 0;
+  height: 100%;
 }
 
 a:hover {
   cursor: url(assets/cursor-pointer.gif), auto;
+}
+
+input:hover {
+  cursor: url(assets/cursor-text.gif), auto;
 }
