@@ -7,12 +7,7 @@
       ></app-list-element>
     </div>
     <div class="preview" (mouseover)="showInfo()">
-        <iframe class="cursor-normal"
-        style="height: 100%; width: 100%;"
-        [src]="iframeLink ? iframeLink : ''"
-        frameborder="0">
-      </iframe>
-      <!-- <div class="custom-cursor"></div> -->
+      <img class="image" [src]="image" (click)="goToOriginal()">
       <div class="own-wrapper" *ngIf="visibleInfo && memePrice">
           <app-info-box [memePrice]="memePrice" [memePriceUSD]="memePriceUSD"></app-info-box>
         </div>

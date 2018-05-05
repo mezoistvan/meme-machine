@@ -4,6 +4,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { hex2a } from '../util/hextoa';
 import { tap } from 'rxjs/operators';
+import { InstagramService } from '../instagram.service';
 
 @Component({
   selector: 'app-created',
@@ -16,12 +17,16 @@ export class CreatedComponent implements OnInit {
   visibleInfo = false;
   memePrice: any;
   memePriceUSD: any;
+  image: any;
+  selected: any;
 
   constructor(
     private web3: Web3Service,
     private cd: ChangeDetectorRef,
     private domSanitizer: DomSanitizer,
-    private cmc: CoinmarketcapService) {}
+    private cmc: CoinmarketcapService,
+    private ig: InstagramService
+  ) {}
 
   ngOnInit() {
     this.web3.contract.subscribe((c) => {
@@ -35,8 +40,12 @@ export class CreatedComponent implements OnInit {
   }
 
   onMemeObj(meme) {
-    this.iframeLink = this.domSanitizer.bypassSecurityTrustResourceUrl(
-      `https://www.instagram.com/p/${hex2a(meme[1]).split('/')[4]}/embed`);
+    this.selected = meme;
+
+    this.ig.getInstagramImage(hex2a(meme[1]).split('/')[4]).subscribe((img) => {
+      this.image = this.domSanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(img));
+      this.cd.detectChanges();
+    });
 
     this.memePrice = this.web3._web3.fromWei(meme[3]);
 
@@ -54,4 +63,7 @@ export class CreatedComponent implements OnInit {
     this.visibleInfo = false;
   }
 
+  goToOriginal() {
+    window.location.href = (`http://instagr.am/p/${hex2a(this.selected[1]).split('/')[4]}`);
+  }
 }
