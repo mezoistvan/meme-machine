@@ -1,0 +1,55 @@
+.created {
+    min-width: 100%;
+    min-height: 100%;
+    display: flex;
+}
+
+.preview {
+    min-width: 50%;
+    min-height: 100%;
+    background: linear-gradient(red, white);
+}
+
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+app-list-element {
+    width: 100%;
+}
+
+.own-wrapper {
+    height: 50%;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: fixed;
+    top: 50%;
+    z-index: 101;
+}
+
+app-info-box {
+    width: 100%;
+    height: 100%;
+    margin-left: 70px;
+    margin-right: 70px;
+    box-sizing: border-box;
+    padding-top: 70px;
+    padding-bottom: 70px;
+}
+
+.custom-cursor {
+    cursor: url(../../assets/cursor-normal.png), auto !important;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 100;
+    width: 50%;
+}
