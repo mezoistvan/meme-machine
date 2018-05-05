@@ -1,3 +1,11 @@
-<p>
-  browse works!
-</p>
+<div class="browse">
+  <div class="list">
+      <app-list-element *ngFor="let i of [1, 2, 3]"></app-list-element>
+  </div>
+  <div class="preview">
+    <div class="own-wrapper">
+      <app-info-box></app-info-box>
+      <!-- <span class="own">OWN</span> -->
+    </div>
+  </div>
+</div>

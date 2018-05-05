@@ -8,6 +8,8 @@ import { BrowseComponent } from './browse/browse.component';
 import { CreateComponent } from './create/create.component';
 import { FooterComponent } from './footer/footer.component';
 import { OwnedComponent } from './owned/owned.component';
+import { ListElementComponent } from './list-element/list-element.component';
+import { InfoBoxComponent } from './info-box/info-box.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'browse', pathMatch: 'full' },
@@ -23,7 +25,9 @@ const routes: Routes = [
     BrowseComponent,
     CreateComponent,
     FooterComponent,
-    OwnedComponent
+    OwnedComponent,
+    ListElementComponent,
+    InfoBoxComponent
   ],
   imports: [
     BrowserModule,

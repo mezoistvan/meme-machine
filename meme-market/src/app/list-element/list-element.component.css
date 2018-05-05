@@ -1,0 +1,10 @@
+.element {
+    height: 160px;
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+
+    font: 70px Helvetica, Arial, Sans-Serif;
+
+}

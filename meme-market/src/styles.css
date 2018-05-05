@@ -1,15 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
 
 body, html {
-  cursor: url(assets/cursor-normal.gif), auto;
+  cursor: url(assets/cursor-normal.png), auto;
   margin: 0;
   height: 100%;
 }
 
 a:hover {
-  cursor: url(assets/cursor-pointer.gif), auto;
+  cursor: url(assets/cursor-pointer.png), auto;
 }
 
 input:hover {
-  cursor: url(assets/cursor-text.gif), auto;
+  cursor: url(assets/cursor-text.png), auto;
 }
