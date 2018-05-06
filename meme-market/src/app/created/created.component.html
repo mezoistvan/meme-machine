@@ -7,7 +7,7 @@
       ></app-list-element>
     </div>
     <div class="preview" (mouseover)="showInfo()">
-      <img class="image" [src]="image" (click)="goToOriginal()">
+      <img class="image" *ngIf="image" [src]="image" (click)="goToOriginal()">
       <div class="own-wrapper" *ngIf="visibleInfo && memePrice">
           <app-info-box [memePrice]="memePrice" [memePriceUSD]="memePriceUSD"></app-info-box>
         </div>

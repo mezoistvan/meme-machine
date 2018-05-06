@@ -13,7 +13,3 @@ a:hover {
 input:hover {
   cursor: url(assets/cursor-text.png), auto;
 }
-
-body {
-  overflow: hidden;
-}

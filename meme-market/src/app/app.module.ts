@@ -13,13 +13,20 @@ import { ListElementComponent } from './list-element/list-element.component';
 import { InfoBoxComponent } from './info-box/info-box.component';
 import { CreatedComponent } from './created/created.component';
 import { Web3Service } from './web3.service';
+import { WelcomeComponent } from './welcome/welcome.component';
+import { AbstractBoxComponent } from './abstract-box/abstract-box.component';
+import { FaqComponent } from './faq/faq.component';
+import { NewsComponent } from './news/news.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'browse', pathMatch: 'full' },
+  { path: '', component: WelcomeComponent },
   { path: 'browse', component: BrowseComponent },
   { path: 'create', component: CreateComponent },
   { path: 'created', component: CreatedComponent },
-  { path: 'owned', component: OwnedComponent }
+  { path: 'news', component: NewsComponent },
+  { path: 'faq', component: FaqComponent },
+  { path: 'owned', component: OwnedComponent },
+  { path: '**', component: WelcomeComponent }
 ];
 
 export function initWeb3(web3: Web3Service) {
@@ -38,11 +45,15 @@ export function initWeb3(web3: Web3Service) {
     OwnedComponent,
     ListElementComponent,
     InfoBoxComponent,
-    CreatedComponent
+    CreatedComponent,
+    WelcomeComponent,
+    AbstractBoxComponent,
+    FaqComponent,
+    NewsComponent
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(routes, {initialNavigation: 'enabled'}),
+    RouterModule.forRoot(routes, {initialNavigation: 'enabled', useHash: true}),
     HttpClientModule
   ],
   providers: [{ provide: APP_INITIALIZER, useFactory: initWeb3, deps: [Web3Service], multi: true }],

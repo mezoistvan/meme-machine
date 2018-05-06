@@ -1,0 +1,8 @@
+app-header, app-footer {
+    position: fixed;
+    width: 100%;
+}
+
+app-footer {
+    top: 100%;
+}
