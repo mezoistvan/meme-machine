@@ -6,7 +6,6 @@
     align-items: flex-end;
     position: absolute;
     bottom: 0;
-    z-index: 100;
 }
 
 a {
