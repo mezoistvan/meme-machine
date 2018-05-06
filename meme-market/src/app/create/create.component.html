@@ -1,9 +1,11 @@
 <div class="create">
   <div class="form">
     <div class="link">
-      <input type="text" placeholder="ADD LINK">
+      <input type="text" placeholder="ADD LINK" [(ngModel)]="link" (ngModelChange)="parseLink()">
     </div>
-    <span class="submit">CREATE</span>
+    <span class="submit" (click)="create()">CREATE</span>
   </div>
-  <div class="preview"></div>
+  <div class="preview">
+      <img class="image" *ngIf="image" [src]="image">
+  </div>
 </div>

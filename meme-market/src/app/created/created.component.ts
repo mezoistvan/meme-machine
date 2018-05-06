@@ -1,3 +1,4 @@
+import { LoadingService } from './../loading.service';
 import { CoinmarketcapService } from './../coinmarketcap.service';
 import { Web3Service } from './../web3.service';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
@@ -25,14 +26,17 @@ export class CreatedComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private domSanitizer: DomSanitizer,
     private cmc: CoinmarketcapService,
-    private ig: InstagramService
+    private ig: InstagramService,
+    private loading: LoadingService
   ) {}
 
   ngOnInit() {
+    this.loading.loading();
     this.web3.contract.subscribe((c) => {
       this.web3.account.subscribe((a) => {
           c.deedsOf(a, (_e, r) => {
               this.list = r;
+              this.loading.notLoading();
               this.cd.detectChanges();
           });
       });
@@ -44,6 +48,7 @@ export class CreatedComponent implements OnInit {
 
     this.ig.getInstagramImage(hex2a(meme[1]).split('/')[4]).subscribe((img) => {
       this.image = this.domSanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(img));
+      this.loading.notLoading();
       this.cd.detectChanges();
     });
 
@@ -64,6 +69,6 @@ export class CreatedComponent implements OnInit {
   }
 
   goToOriginal() {
-    window.location.href = (`http://instagr.am/p/${hex2a(this.selected[1]).split('/')[4]}`);
+    window.open(`http://instagr.am/p/${hex2a(this.selected[1]).split('/')[4]}`, '_blank');
   }
 }

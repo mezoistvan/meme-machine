@@ -12,3 +12,42 @@
     height: 100%;
     box-sizing: border-box;
 }
+
+.welcome {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo {
+    color: white; 
+    font: bold 160px Helvetica, Arial, Sans-Serif;
+    text-shadow: 1px 1px red, 
+                 2px 2px red, 
+                 3px 3px red, 
+                 4px 4px red, 
+                 5px 5px red, 
+                 5px 5px red, 
+                 6px 6px red, 
+                 7px 7px red, 
+                 8px 8px red, 
+                 9px 9px red, 
+                 10px 10px red,
+                 11px 11px red,
+                 12px 12px red,
+                 13px 13px red,
+                 14px 14px red;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.text {
+    flex: 1;
+    font: 70px Helvetica, Arial, Sans-Serif;
+    padding-left: 70px;
+}

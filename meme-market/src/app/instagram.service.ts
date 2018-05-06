@@ -1,3 +1,4 @@
+import { LoadingService } from './loading.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
@@ -7,13 +8,16 @@ import { tap } from 'rxjs/operators';
 })
 export class InstagramService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private loading: LoadingService) { }
 
   getInstagramImage(shortcode) {
+    this.loading.loading();
     return this.http.get(`https://instagram.com/p/${shortcode}/media/?size=l`, {
       responseType: 'blob'
     }).pipe(
-      tap(r => console.log(r))
+      tap(_ => {
+        this.loading.notLoading();
+      })
     );
   }
 

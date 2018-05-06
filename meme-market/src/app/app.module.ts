@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
@@ -16,14 +17,15 @@ import { Web3Service } from './web3.service';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { AbstractBoxComponent } from './abstract-box/abstract-box.component';
 import { FaqComponent } from './faq/faq.component';
-import { NewsComponent } from './news/news.component';
+import { BlogComponent } from './blog/blog.component';
+import { LoadingComponent } from './loading/loading.component';
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
   { path: 'browse', component: BrowseComponent },
   { path: 'create', component: CreateComponent },
   { path: 'created', component: CreatedComponent },
-  { path: 'news', component: NewsComponent },
+  { path: 'blog', component: BlogComponent },
   { path: 'faq', component: FaqComponent },
   { path: 'owned', component: OwnedComponent },
   { path: '**', component: WelcomeComponent }
@@ -49,12 +51,14 @@ export function initWeb3(web3: Web3Service) {
     WelcomeComponent,
     AbstractBoxComponent,
     FaqComponent,
-    NewsComponent
+    BlogComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes, {initialNavigation: 'enabled', useHash: true}),
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [{ provide: APP_INITIALIZER, useFactory: initWeb3, deps: [Web3Service], multi: true }],
   bootstrap: [AppComponent]
