@@ -7,11 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./loading.component.css']
 })
 export class LoadingComponent implements OnInit {
-  loading: LoadingService;
+  isLoading: any;
 
-  constructor(loading: LoadingService) { }
+  constructor(private loading: LoadingService) { }
 
   ngOnInit() {
+    this.loading.isLoading.subscribe(val => this.isLoading = val);
   }
 
 }

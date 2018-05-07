@@ -28,18 +28,20 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 
 todo:
-    loading image homokora
-    scrollable list in created
-    call own function in created
-    owned screen set up (scroll list)
-    browse screen set up (scroll list, own function)
-    create bug in solidity fix
-    modify solidity to 75%-20%-5%
+        loading image homokora (pls jozsi)
+        bg image for opening screen (pls jozsi)
+    OK  scrollable list in created
+        call own function in created
+        owned screen set up (scroll list)
+        browse screen set up (scroll list)
+        call own function in browse
+        create bug in solidity fix
+        modify solidity to 75%-20%-5%
 
-    blog post for start
-    medium article describing things (how the money is distributed, how to create, how to buy)
-    del faqcomponent and blogcomponent and just link to medium
-    mememarket twitter
-    fix welcome screen + add welcome cursor
+        blog post for start
+        medium article describing things (how the money is distributed, how to create, how to buy)
+        del faqcomponent and blogcomponent and just link to medium
+        mememarket twitter
+        fix welcome screen + add welcome cursor
 
-    KIBU: artmarket wl
+        KIBU: artmarket wl

@@ -11,6 +11,6 @@ app-footer {
 app-loading {
     position: fixed;
     z-index: 1000;
-    top: 50%;
-    left: 50%;
+    top: calc(50% - 70px);
+    left: calc(50% - 40px);
 }
