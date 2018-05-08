@@ -32,6 +32,7 @@ todo:
         bg image for opening screen (pls jozsi)
     OK  scrollable list in created
         call own function in created
+        popup for success/error messages
         owned screen set up (scroll list)
         browse screen set up (scroll list)
         call own function in browse
