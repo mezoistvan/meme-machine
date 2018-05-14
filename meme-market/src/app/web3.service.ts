@@ -8,7 +8,7 @@ export class Web3Service {
 
     _window: any;
     _web3: any;
-    _contractAddress = '0x5494dea34eeeac027091db0df3f387069bb0da9c';
+    _contractAddress = '0x069a9630f72E6963E98B95C0E3227CD090074C98';
     _abi = [
         {
             "constant": true,
@@ -55,7 +55,7 @@ export class Web3Service {
             "outputs": [
                 {
                     "name": "",
-                    "type": "string"
+                    "type": "bytes32"
                 },
                 {
                     "name": "",
@@ -303,6 +303,15 @@ export class Web3Service {
         },
         {
             "constant": false,
+            "inputs": [],
+            "name": "renounceOwnership",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "constant": false,
             "inputs": [
                 {
                     "name": "_name",
@@ -437,6 +446,25 @@ export class Web3Service {
             "outputs": [],
             "payable": true,
             "stateMutability": "payable",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [
+                {
+                    "name": "_owner",
+                    "type": "address"
+                }
+            ],
+            "name": "approvedOf",
+            "outputs": [
+                {
+                    "name": "_ownedDeedIds",
+                    "type": "uint256[]"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
             "type": "function"
         },
         {
@@ -683,6 +711,18 @@ export class Web3Service {
             "anonymous": false,
             "inputs": [],
             "name": "Unpause",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "name": "previousOwner",
+                    "type": "address"
+                }
+            ],
+            "name": "OwnershipRenounced",
             "type": "event"
         },
         {

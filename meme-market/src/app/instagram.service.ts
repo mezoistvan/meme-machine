@@ -26,4 +26,8 @@ export class InstagramService {
       tap(r => console.log(r))
     );
   }
+
+  getId(link) {
+    return link.split('/')[4];
+  }
 }

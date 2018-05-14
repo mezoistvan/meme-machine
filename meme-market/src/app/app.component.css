@@ -12,5 +12,12 @@ app-loading {
     position: fixed;
     z-index: 1000;
     top: calc(50% - 70px);
-    left: calc(50% - 40px);
+    left: calc(75% - 40px);
+}
+
+app-loading {
+    position: fixed;
+    z-index: 1000;
+    top: calc(50% - 100px);
+    left: calc(50% - 200px);
 }

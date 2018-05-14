@@ -1,0 +1,669 @@
+pragma solidity ^0.4.18;
+pragma experimental ABIEncoderV2;
+
+import "github.com/OpenZeppelin/zeppelin-solidity/contracts/math/SafeMath.sol";
+import "github.com/OpenZeppelin/zeppelin-solidity/contracts/lifecycle/Pausable.sol";
+import "github.com/OpenZeppelin/zeppelin-solidity/contracts/payment/PullPayment.sol";
+import "github.com/OpenZeppelin/zeppelin-solidity/contracts/ReentrancyGuard.sol";
+
+interface ERC721Metadata {
+
+    /// @dev ERC-165 (draft) interface signature for ERC721
+    // bytes4 internal constant INTERFACE_SIGNATURE_ERC721Metadata = // 0x2a786f11
+    //     bytes4(keccak256('name()')) ^
+    //     bytes4(keccak256('symbol()')) ^
+    //     bytes4(keccak256('deedUri(uint256)'));
+
+    /// @notice A descriptive name for a collection of deeds managed by this
+    ///  contract
+    /// @dev Wallets and exchanges MAY display this to the end user.
+    function name() public pure returns (string _name);
+
+    /// @notice An abbreviated name for deeds managed by this contract
+    /// @dev Wallets and exchanges MAY display this to the end user.
+    function symbol() public pure returns (string _symbol);
+
+    /// @notice A distinct name for a deed managed by this contract
+    /// @dev Wallets and exchanges MAY display this to the end user.
+    function deedName(uint256 _deedId) public pure returns (string _deedName);
+
+    /// @notice A distinct URI (RFC 3986) for a given token.
+    /// @dev If:
+    ///  * The URI is a URL
+    ///  * The URL is accessible
+    ///  * The URL points to a valid JSON file format (ECMA-404 2nd ed.)
+    ///  * The JSON base element is an object
+    ///  then these names of the base element SHALL have special meaning:
+    ///  * "name": A string identifying the item to which `_deedId` grants
+    ///    ownership
+    ///  * "description": A string detailing the item to which `_deedId` grants
+    ///    ownership
+    ///  * "image": A URI pointing to a file of image/* mime type representing
+    ///    the item to which `_deedId` grants ownership
+    ///  Wallets and exchanges MAY display this to the end user.
+    ///  Consider making any images at a width between 320 and 1080 pixels and
+    ///  aspect ratio between 1.91:1 and 4:5 inclusive.
+    function deedUri(uint256 _deedId) external view returns (string _deedUri);
+}
+
+interface ERC721 {
+
+    // COMPLIANCE WITH ERC-165 (DRAFT) /////////////////////////////////////////
+
+    /// @dev ERC-165 (draft) interface signature for itself
+    // bytes4 internal constant INTERFACE_SIGNATURE_ERC165 = // 0x01ffc9a7
+    //     bytes4(keccak256('supportsInterface(bytes4)'));
+
+    /// @dev ERC-165 (draft) interface signature for ERC721
+    // bytes4 internal constant INTERFACE_SIGNATURE_ERC721 = // 0xda671b9b
+    //     bytes4(keccak256('ownerOf(uint256)')) ^
+    //     bytes4(keccak256('countOfDeeds()')) ^
+    //     bytes4(keccak256('countOfDeedsByOwner(address)')) ^
+    //     bytes4(keccak256('deedOfOwnerByIndex(address,uint256)')) ^
+    //     bytes4(keccak256('approve(address,uint256)')) ^
+    //     bytes4(keccak256('takeOwnership(uint256)'));
+
+    /// @notice Query a contract to see if it supports a certain interface
+    /// @dev Returns `true` the interface is supported and `false` otherwise,
+    ///  returns `true` for INTERFACE_SIGNATURE_ERC165 and
+    ///  INTERFACE_SIGNATURE_ERC721, see ERC-165 for other interface signatures.
+    function supportsInterface(bytes4 _interfaceID) external pure returns (bool);
+
+    // PUBLIC QUERY FUNCTIONS //////////////////////////////////////////////////
+
+    /// @notice Find the owner of a deed
+    /// @param _deedId The identifier for a deed we are inspecting
+    /// @dev Deeds assigned to zero address are considered invalid, and
+    ///  queries about them do throw.
+    /// @return The non-zero address of the owner of deed `_deedId`, or `throw`
+    ///  if deed `_deedId` is not tracked by this contract
+    function ownerOf(uint256 _deedId) external view returns (address _owner);
+
+    /// @notice Count deeds tracked by this contract
+    /// @return A count of valid deeds tracked by this contract, where each one of
+    ///  them has an assigned and queryable owner not equal to the zero address
+    function countOfDeeds() external view returns (uint256 _count);
+
+    /// @notice Count all deeds assigned to an owner
+    /// @dev Throws if `_owner` is the zero address, representing invalid deeds.
+    /// @param _owner An address where we are interested in deeds owned by them
+    /// @return The number of deeds owned by `_owner`, possibly zero
+    function countOfDeedsByOwner(address _owner) external view returns (uint256 _count);
+
+    /// @notice Enumerate deeds assigned to an owner
+    /// @dev Throws if `_index` >= `countOfDeedsByOwner(_owner)` or if
+    ///  `_owner` is the zero address, representing invalid deeds.
+    /// @param _owner An address where we are interested in deeds owned by them
+    /// @param _index A counter less than `countOfDeedsByOwner(_owner)`
+    /// @return The identifier for the `_index`th deed assigned to `_owner`,
+    ///   (sort order not specified)
+    function deedOfOwnerByIndex(address _owner, uint256 _index) external view returns (uint256 _deedId);
+
+    // TRANSFER MECHANISM //////////////////////////////////////////////////////
+
+    /// @dev This event emits when ownership of any deed changes by any
+    ///  mechanism. This event emits when deeds are created (`from` == 0) and
+    ///  destroyed (`to` == 0). Exception: during contract creation, any
+    ///  transfers may occur without emitting `Transfer`. At the time of any transfer,
+    ///  the "approved taker" is implicitly reset to the zero address.
+    event Transfer(address indexed _from, address indexed _to, uint256 indexed _deedId);
+
+    /// @dev The Approve event emits to log the "approved taker" for a deed -- whether
+    ///  set for the first time, reaffirmed by setting the same value, or setting to
+    ///  a new value. The "approved taker" is the zero address if nobody can take the
+    ///  deed now or it is an address if that address can call `takeOwnership` to attempt
+    ///  taking the deed. Any change to the "approved taker" for a deed SHALL cause
+    ///  Approve to emit. However, an exception, the Approve event will not emit when
+    ///  Transfer emits, this is because Transfer implicitly denotes the "approved taker"
+    ///  is reset to the zero address.
+    event Approval(address indexed _owner, address indexed _approved, uint256 indexed _deedId);
+
+    /// @notice Set the "approved taker" for your deed, or revoke approval by
+    ///  setting the zero address. You may `approve` any number of times while
+    ///  the deed is assigned to you, only the most recent approval matters. Emits
+    ///  an Approval event.
+    /// @dev Throws if `msg.sender` does not own deed `_deedId` or if `_to` ==
+    ///  `msg.sender` or if `_deedId` is not a valid deed.
+    /// @param _deedId The deed for which you are granting approval
+    function approve(address _to, uint256 _deedId) external payable;
+
+    /// @notice Become owner of a deed for which you are currently approved
+    /// @dev Throws if `msg.sender` is not approved to become the owner of
+    ///  `deedId` or if `msg.sender` currently owns `_deedId` or if `_deedId is not a
+    ///  valid deed.
+    /// @param _deedId The deed that is being transferred
+    function takeOwnership(uint256 _deedId) external payable;
+}
+
+/**
+ * @title ERC721Deed
+ * Generic implementation for the required functionality of the ERC721 standard
+ */
+contract ERC721Deed is ERC721 {
+  using SafeMath for uint256;
+
+  // Total amount of deeds
+  uint256 private totalDeeds;
+
+  // Mapping from deed ID to owner
+  mapping (uint256 => address) private deedOwner;
+
+  // Mapping from deed ID to approved address
+  mapping (uint256 => address) private deedApprovedFor;
+
+  // Mapping from owner to list of owned deed IDs
+  mapping (address => uint256[]) private ownedDeeds;
+  
+  // Mapping from approvedFor to a list of approvedFor deed IDs
+  mapping (address => uint256[]) private approvedForMapping;
+
+  // Mapping from deed ID to index of the owner deeds list
+  mapping(uint256 => uint256) private ownedDeedsIndex;
+
+  /**
+  * @dev Guarantees msg.sender is owner of the given deed
+  * @param _deedId uint256 ID of the deed to validate its ownership belongs to msg.sender
+  */
+  modifier onlyOwnerOf(uint256 _deedId) {
+    require(deedOwner[_deedId] == msg.sender);
+    _;
+  }
+
+  /**
+  * @dev Gets the owner of the specified deed ID
+  * @param _deedId uint256 ID of the deed to query the owner of
+  * @return owner address currently marked as the owner of the given deed ID
+  */
+  function ownerOf(uint256 _deedId)
+  external view returns (address _owner) {
+    require(deedOwner[_deedId] != address(0));
+    _owner = deedOwner[_deedId];
+  }
+
+  /**
+  * @dev Gets the total amount of deeds stored by the contract
+  * @return uint256 representing the total amount of deeds
+  */
+  function countOfDeeds()
+  external view returns (uint256) {
+    return totalDeeds;
+  }
+
+  /**
+  * @dev Gets the number of deeds of the specified address
+  * @param _owner address to query the number of deeds
+  * @return uint256 representing the number of deeds owned by the passed address
+  */
+  function countOfDeedsByOwner(address _owner)
+  external view returns (uint256 _count) {
+    require(_owner != address(0));
+    _count = ownedDeeds[_owner].length;
+  }
+
+  /**
+  * @dev Gets the deed ID of the specified address at the specified index
+  * @param _owner address for the deed's owner
+  * @param _index uint256 for the n-th deed in the list of deeds owned by this owner
+  * @return uint256 representing the ID of the deed
+  */
+  function deedOfOwnerByIndex(address _owner, uint256 _index)
+  external view returns (uint256 _deedId) {
+    require(_owner != address(0));
+    require(_index < ownedDeeds[_owner].length);
+    _deedId = ownedDeeds[_owner][_index];
+  }
+
+  /**
+  * @dev Gets all deed IDs of the specified address
+  * @param _owner address for the deed's owner
+  * @return uint256[] representing all deed IDs owned by the passed address
+  */
+  function deedsOf(address _owner)
+  external view returns (uint256[] _ownedDeedIds) {
+    require(_owner != address(0));
+    _ownedDeedIds = ownedDeeds[_owner];
+  }
+  
+  /**
+  * @dev Gets all owned deed IDs of the specified address
+  * @param _owner address for the deed's owner
+  * @return uint256[] representing all deed IDs owned by the passed address
+  */
+  function approvedOf(address _owner)
+  external view returns (uint256[] _ownedDeedIds) {
+    require(_owner != address(0));
+    _ownedDeedIds = approvedForMapping[_owner];
+  }
+
+  /**
+  * @dev Approves another address to claim for the ownership of the given deed ID
+  * @param _to address to be approved for the given deed ID
+  * @param _deedId uint256 ID of the deed to be approved
+  */
+  function approve(address _to, uint256 _deedId)
+  external onlyOwnerOf(_deedId) payable {
+    require(_to != msg.sender);
+    if(_to != address(0) || approvedFor(_deedId) != address(0)) {
+      Approval(msg.sender, _to, _deedId);
+    }
+    deedApprovedFor[_deedId] = _to;
+  }
+
+  /**
+  * @dev Claims the ownership of a given deed ID
+  * @param _deedId uint256 ID of the deed being claimed by the msg.sender
+  */
+  function takeOwnership(uint256 _deedId)
+  external payable {
+    require(approvedFor(_deedId) == msg.sender);
+    clearApprovalAndTransfer(deedOwner[_deedId], msg.sender, _deedId);
+  }
+
+  /**
+   * @dev Gets the approved address to take ownership of a given deed ID
+   * @param _deedId uint256 ID of the deed to query the approval of
+   * @return address currently approved to take ownership of the given deed ID
+   */
+  function approvedFor(uint256 _deedId)
+  public view returns (address) {
+    return deedApprovedFor[_deedId];
+  }
+
+  /**
+  * @dev Transfers the ownership of a given deed ID to another address
+  * @param _to address to receive the ownership of the given deed ID
+  * @param _deedId uint256 ID of the deed to be transferred
+  */
+  function transfer(address _to, uint256 _deedId)
+  public onlyOwnerOf(_deedId) {
+    clearApprovalAndTransfer(msg.sender, _to, _deedId);
+  }
+
+  /**
+  * @dev Mint deed function
+  * @param _to The address that will own the minted deed
+  */
+  function _mint(address _to, uint256 _deedId)
+  internal {
+    require(_to != address(0));
+    addDeed(_to, _deedId);
+    Transfer(0x0, _to, _deedId);
+  }
+
+  /**
+  * @dev Burns a specific deed
+  * @param _deedId uint256 ID of the deed being burned by the msg.sender
+  */
+  function _burn(uint256 _deedId) onlyOwnerOf(_deedId)
+  internal {
+    if (approvedFor(_deedId) != 0) {
+      clearApproval(msg.sender, _deedId);
+    }
+    removeDeed(msg.sender, _deedId);
+    Transfer(msg.sender, 0x0, _deedId);
+  }
+
+  /**
+  * @dev Internal function to clear current approval and transfer the ownership of a given deed ID
+  * @param _from address which you want to send deeds from
+  * @param _to address which you want to transfer the deed to
+  * @param _deedId uint256 ID of the deed to be transferred
+  */
+  function clearApprovalAndTransfer(address _from, address _to, uint256 _deedId)
+  internal {
+    require(_to != address(0));
+    require(_to != _from);
+    require(deedOwner[_deedId] == _from);
+
+    clearApproval(_from, _deedId);
+    removeDeed(_from, _deedId);
+    addDeed(_to, _deedId);
+    Transfer(_from, _to, _deedId);
+  }
+
+  /**
+  * @dev Internal function to clear current approval of a given deed ID
+  * @param _deedId uint256 ID of the deed to be transferred
+  */
+  function clearApproval(address _owner, uint256 _deedId)
+  private {
+    require(deedOwner[_deedId] == _owner);
+    deedApprovedFor[_deedId] = 0;
+    Approval(_owner, 0, _deedId);
+  }
+
+  /**
+  * @dev Internal function to add a deed ID to the list of a given address
+  * @param _to address representing the new owner of the given deed ID
+  * @param _deedId uint256 ID of the deed to be added to the deeds list of the given address
+  */
+  function addDeed(address _to, uint256 _deedId)
+  private {
+    require(deedOwner[_deedId] == address(0));
+    deedOwner[_deedId] = _to;
+    uint256 length = ownedDeeds[_to].length;
+    ownedDeeds[_to].push(_deedId);
+    ownedDeedsIndex[_deedId] = length;
+    totalDeeds = totalDeeds.add(1);
+  }
+
+  /**
+  * @dev Internal function to remove a deed ID from the list of a given address
+  * @param _from address representing the previous owner of the given deed ID
+  * @param _deedId uint256 ID of the deed to be removed from the deeds list of the given address
+  */
+  function removeDeed(address _from, uint256 _deedId)
+  private {
+    require(deedOwner[_deedId] == _from);
+
+    uint256 deedIndex = ownedDeedsIndex[_deedId];
+    uint256 lastDeedIndex = ownedDeeds[_from].length.sub(1);
+    uint256 lastDeed = ownedDeeds[_from][lastDeedIndex];
+
+    deedOwner[_deedId] = 0;
+    ownedDeeds[_from][deedIndex] = lastDeed;
+    ownedDeeds[_from][lastDeedIndex] = 0;
+    // Note that this will handle single-element arrays. In that case, both deedIndex and lastDeedIndex are going to
+    // be zero. Then we can make sure that we will remove _deedId from the ownedDeeds list since we are first swapping
+    // the lastDeed to the first position, and then dropping the element placed in the last position of the list
+
+    ownedDeeds[_from].length--;
+    ownedDeedsIndex[_deedId] = 0;
+    ownedDeedsIndex[lastDeed] = deedIndex;
+    totalDeeds = totalDeeds.sub(1);
+  }
+}
+
+
+
+/*
+  Notes on this example implementation:
+
+  For this example, each deed is associated with a name and a beneficiary, and the concept of "appropriation" is introduced: Deeds are permanently up for sale.
+  Whoever is willing to pay more than the last price that was paid for a given deed, can take ownership of that deed.
+  The previous owner is reimbursed with the amount he paid earlier, and additionally receives half of the amount that the price was increased by. The other half goes to the deed's beneficiary address.
+ */
+
+contract MemeToken is ERC721Deed, Pausable, PullPayment, ReentrancyGuard {
+
+  using SafeMath for uint256;
+
+
+  /* Events */
+
+  // When a deed is created by the contract owner.
+  event Creation(uint256 indexed id, bytes32 indexed name, address beneficiary);
+
+  // When a deed is appropriated, the ownership of the deed is transferred to the new owner. The old owner is reimbursed, and he and the deed's beneficiary share the profit of the sale.
+  event Appropriation(uint256 indexed id, address indexed oldOwner, uint256 oldPrice, address indexed newOwner, uint256 newPrice);
+
+  // Payments to the deed's beneficiary address via PullPayment are also supported by this contract.
+  event Payment(uint256 indexed id, address indexed sender, address indexed beneficiary, uint256 amount);
+
+  // When a deed needs to be removed. Payments to benefeciaries are kept available for withdrawal. The contract owner needs to own the deed in order to be able to destroy it. So, deed owners are protected from involuntary loss of the potential reimbursement.
+  event Destruction(uint256 indexed id);
+
+
+  /* The actual deeds */
+
+  // The data structure of the example deed
+  struct Meme {
+    bytes32 name;
+    bytes ipfs;
+    address beneficiary;
+    uint256 price;
+    uint256 created;
+    uint256 deleted;
+  }
+
+  // Mapping from _deedId to Meme
+  mapping (uint256 => Meme) private deeds;
+
+  // Mapping from deed name to boolean indicating if the name is already taken
+  mapping (bytes32 => bool) private deedNameExists;
+
+  // Needed to make all deeds discoverable. The length of this array also serves as our deed ID.
+  uint256[] private deedIds;
+
+
+  /* Variables in control of owner */
+
+  // The contract owner can change the initial price of deeds at Creation.
+  uint256 private creationPrice = 0.01 ether;
+
+  // The contract owner can change the base URL, in case it becomes necessary. It is needed for Metadata.
+  string public url = "http://meme-machine.com/";
+
+  // ERC-165 Metadata
+  bytes4 internal constant INTERFACE_SIGNATURE_ERC165 = // 0x01ffc9a7
+      bytes4(keccak256('supportsInterface(bytes4)'));
+
+  bytes4 internal constant INTERFACE_SIGNATURE_ERC721 = // 0xda671b9b
+      bytes4(keccak256('ownerOf(uint256)')) ^
+      bytes4(keccak256('countOfDeeds()')) ^
+      bytes4(keccak256('countOfDeedsByOwner(address)')) ^
+      bytes4(keccak256('deedOfOwnerByIndex(address,uint256)')) ^
+      bytes4(keccak256('approve(address,uint256)')) ^
+      bytes4(keccak256('takeOwnership(uint256)'));
+
+  bytes4 internal constant INTERFACE_SIGNATURE_ERC721Metadata = // 0x2a786f11
+      bytes4(keccak256('name()')) ^
+      bytes4(keccak256('symbol()')) ^
+      bytes4(keccak256('deedUri(uint256)'));
+
+  function ExampleDeed() public pure {}
+
+  // The contract owner can withdraw funds that were received this way.
+  function() public payable {}
+
+  modifier onlyExistingNames(uint256 _deedId) {
+    require(deedNameExists[deeds[_deedId].name]);
+    _;
+  }
+
+  modifier noExistingNames(bytes32 _name) {
+    require(!deedNameExists[_name]);
+    _;
+  }
+
+  modifier notDeleted(uint256 _deedId) {
+    require(deeds[_deedId].deleted == 0);
+    _;
+  }
+
+
+   /* ERC721Metadata */
+
+  function name()
+  external pure returns (string) {
+    return "MemeToken";
+  }
+
+  function symbol()
+  external pure returns (string) {
+    return "MEME";
+  }
+
+  function supportsInterface(bytes4 _interfaceID)
+  external pure returns (bool) {
+    return (
+      _interfaceID == INTERFACE_SIGNATURE_ERC165
+      || _interfaceID == INTERFACE_SIGNATURE_ERC721
+      || _interfaceID == INTERFACE_SIGNATURE_ERC721Metadata
+    );
+  }
+
+  function deedUri(uint256 _deedId)
+  external view onlyExistingNames(_deedId) returns (string _uri) {
+    _uri = _strConcat(url, _bytes32ToString(deeds[_deedId].name));
+  }
+
+  function deedName(uint256 _deedId)
+  external view onlyExistingNames(_deedId) returns (string _name) {
+    _name = _bytes32ToString(deeds[_deedId].name);
+  }
+
+  /* Enable listing of all deeds (alternative to ERC721Enumerable to avoid having to work with arrays). */
+  function ids()
+  external view returns (uint256[]) {
+    return deedIds;
+  }
+
+  function deed(uint256 _deedId)
+  external view returns (bytes32, bytes, address, uint256, uint256, uint256) {
+     return (deeds[_deedId].name, deeds[_deedId].ipfs, deeds[_deedId].beneficiary, deeds[_deedId].price, deeds[_deedId].created, deeds[_deedId].deleted);
+  }
+
+  /* Core features of the example: Appropriation and Payment */
+
+  // Forces the transfer of the deed to a new owner, if a higher price was paid. This functionality can be paused by the owner.
+  function appropriate(uint256 _deedId)
+  external whenNotPaused nonReentrant payable {
+    // The new price must be greater than the old price.
+    uint256 oldPrice = priceOf(_deedId);
+    uint256 newPrice = msg.value;
+    require(newPrice > oldPrice);
+
+    // The current owner is forbidden to appropriate himself.
+    address oldOwner = this.ownerOf(_deedId);
+    address newOwner = msg.sender;
+    require(oldOwner != newOwner);
+
+    // Set new price of the deed.
+    deeds[_deedId].price = newPrice;
+
+    // The profit is split between the previous deed owner and the deed beneficiary in equal parts.
+    uint256 profitShare = newPrice.sub(oldPrice).div(2);
+    
+    uint256 toContractOwner = profitShare.div(100);
+    
+    // The deed beneficiary gets his share.
+    asyncSend(beneficiaryOf(_deedId), profitShare.sub(toContractOwner));
+
+    // Reimburse previous owner with his share and the price he paid.
+    asyncSend(oldOwner, profitShare.add(oldPrice).sub(toContractOwner));
+    
+    // Share to the contract owner
+    asyncSend(0xe80a13C47232EBcD2b836ccE0D45B47dFFAe8B17, toContractOwner);
+
+    // Clear any outstanding approvals and transfer the deed.
+    clearApprovalAndTransfer(oldOwner, newOwner, _deedId);
+    emit Appropriation(_deedId, oldOwner, oldPrice, newOwner, newPrice);
+  }
+
+  // Send a PullPayment.
+  function pay(uint256 _deedId)
+  external nonReentrant payable {
+    address beneficiary = beneficiaryOf(_deedId);
+    asyncSend(beneficiary, msg.value);
+    emit Payment(_deedId, msg.sender, beneficiary, msg.value);
+  }
+
+  // The owner can only withdraw what has not been assigned to beneficiaries as PullPayments.
+  function withdraw()
+  external nonReentrant {
+    withdrawPayments();
+    if (msg.sender == owner) {
+      address myAddress = this;
+      // The contract's balance MUST stay backing the outstanding withdrawals. Only the surplus not needed for any backing can be withdrawn by the owner.
+      uint256 surplus = myAddress.balance.sub(totalPayments);
+      if (surplus > 0) {
+        owner.transfer(surplus);
+      }
+    }
+  }
+
+
+  /* Owner Functions */
+
+  // The contract owner creates deeds. Newly created deeds are initialised with a name and a beneficiary.
+  function create(bytes32 _name, bytes _ipfs, address _beneficiary)
+  public {
+    deedNameExists[_name] = true;
+    uint256 deedId = deedIds.length;
+    deedIds.push(deedId);
+    super._mint(_beneficiary, deedId);
+    deeds[deedId] = Meme({
+      name: _name,
+      ipfs: _ipfs,
+      beneficiary: _beneficiary,
+      price: creationPrice,
+      created: now,
+      deleted: 0
+    });
+    emit Creation(deedId, _name, _beneficiary);
+  }
+
+  // Deeds can only be burned if the contract owner is also the deed owner. This ensures that the deed owner is reimbursed when the contract owner needs to remove a deed from the contract.
+  function destroy(uint256 _deedId)
+  public onlyOwner notDeleted(_deedId) {
+    // We deliberately let the name stay in use, so that each name remains a unique identifier forever.
+
+    // We deliberately let any payments stored for the beneficiary. The contract owner cannot withdraw such deposits.
+
+    // Iterating over an array of IDs is too expensive, so we mark the deed as deleted instead.
+    deeds[_deedId].deleted = now;
+
+    super._burn(_deedId);
+    emit Destruction(_deedId);
+  }
+
+  function setCreationPrice(uint256 _price)
+  public onlyOwner {
+    creationPrice = _price;
+  }
+
+  function setUrl(string _url)
+  public onlyOwner {
+    url = _url;
+  }
+
+  /* Other publicly available functions */
+
+  // Returns the last paid price for this deed.
+  function priceOf(uint256 _deedId)
+  public view notDeleted(_deedId) returns (uint256 _price) {
+    _price = deeds[_deedId].price;
+  }
+
+  // Returns the current beneficiary of the deed.
+  function beneficiaryOf(uint256 _deedId)
+  public view notDeleted(_deedId) returns (address _beneficiary) {
+    _beneficiary = deeds[_deedId].beneficiary;
+  }
+
+
+  /* Private helper functions */
+
+  function _bytes32ToString(bytes32 _bytes32)
+  private pure returns (string) {
+    bytes memory bytesString = new bytes(32);
+    uint charCount = 0;
+    for (uint j = 0; j < 32; j++) {
+      byte char = byte(bytes32(uint(_bytes32) * 2 ** (8 * j)));
+      if (char != 0) {
+        bytesString[charCount] = char;
+        charCount++;
+      }
+    }
+    bytes memory bytesStringTrimmed = new bytes(charCount);
+    for (j = 0; j < charCount; j++) {
+      bytesStringTrimmed[j] = bytesString[j];
+    }
+
+    return string(bytesStringTrimmed);
+  }
+
+  function _strConcat(string _a, string _b)
+  private pure returns (string) {
+    bytes memory _ba = bytes(_a);
+    bytes memory _bb = bytes(_b);
+    string memory ab = new string(_ba.length + _bb.length);
+    bytes memory bab = bytes(ab);
+    uint k = 0;
+    for (uint i = 0; i < _ba.length; i++) bab[k++] = _ba[i];
+    for (i = 0; i < _bb.length; i++) bab[k++] = _bb[i];
+    return string(bab);
+  }
+
+}

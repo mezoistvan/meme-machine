@@ -19,6 +19,7 @@ import { AbstractBoxComponent } from './abstract-box/abstract-box.component';
 import { FaqComponent } from './faq/faq.component';
 import { BlogComponent } from './blog/blog.component';
 import { LoadingComponent } from './loading/loading.component';
+import { PopupComponent } from './popup/popup.component';
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
@@ -52,7 +53,8 @@ export function initWeb3(web3: Web3Service) {
     AbstractBoxComponent,
     FaqComponent,
     BlogComponent,
-    LoadingComponent
+    LoadingComponent,
+    PopupComponent
   ],
   imports: [
     BrowserModule,

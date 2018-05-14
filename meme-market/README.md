@@ -30,14 +30,21 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 todo:
         loading image homokora (pls jozsi)
         bg image for opening screen (pls jozsi)
+        loading image indicator is buggy
     OK  scrollable list in created
-        call own function in created
+    NO  call own function in created
         popup for success/error messages
-        owned screen set up (scroll list)
-        browse screen set up (scroll list)
-        call own function in browse
-        create bug in solidity fix
-        modify solidity to 75%-20%-5%
+    ??  owned screen set up (scroll list)
+    OK  browse screen set up (scroll list)
+    OK  call own function in browse
+    OK  create fn bug in solidity(?) fix ### ONLY CONTRACT OWNER CAN CREATE??? FIX
+    OK  modify solidity to take tax
+        header should update on every route visit
+        set init price and buy price
+        reddit
+        imgur
+        instagram short links
+        DESIGN
 
         blog post for start
         medium article describing things (how the money is distributed, how to create, how to buy)

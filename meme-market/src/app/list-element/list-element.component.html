@@ -1,3 +1,3 @@
-<div class="element">
-  <span class="name" (mouseover)="loadMemeImage()">{{meme ? meme[0] : ''}}</span>
+<div class="element" (click)="loadMemeImage()">
+  <span class="name">{{memeId}} {{meme ? meme[0] : ''}}</span>
 </div>

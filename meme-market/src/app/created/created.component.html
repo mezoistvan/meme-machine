@@ -4,12 +4,13 @@
         *ngFor="let memeId of list"
         [memeId]="memeId"
         (memeObj)="onMemeObj($event)"
+        (click)="selectMemeId(memeId)"
       ></app-list-element>
     </div>
     <div class="preview" (mouseover)="showInfo()">
       <img class="image" *ngIf="image" [src]="image" (click)="goToOriginal()">
       <div class="own-wrapper" *ngIf="visibleInfo && memePrice">
-          <app-info-box [memePrice]="memePrice" [memePriceUSD]="memePriceUSD"></app-info-box>
+          <app-info-box [memeId]="memeId"></app-info-box>
         </div>
     </div>
   </div>

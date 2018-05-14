@@ -7,9 +7,11 @@
 
     font: 70px Helvetica, Arial, Sans-Serif;
     padding-left: 70px;
+    padding-top: 20px;
     box-sizing: border-box;
+    background: linear-gradient(white, blue);
 }
 
-.name:hover {
+.element:hover {
     cursor: url(../../assets/cursor-pointer.png), auto;
 }

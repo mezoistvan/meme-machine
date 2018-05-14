@@ -3,7 +3,6 @@ import { CoinmarketcapService } from './../coinmarketcap.service';
 import { Web3Service } from './../web3.service';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { hex2a } from '../util/hextoa';
 import { tap } from 'rxjs/operators';
 import { InstagramService } from '../instagram.service';
 
@@ -20,6 +19,7 @@ export class CreatedComponent implements OnInit {
   memePriceUSD: any;
   image: any;
   selected: any;
+  memeId: any;
 
   constructor(
     private web3: Web3Service,
@@ -46,7 +46,7 @@ export class CreatedComponent implements OnInit {
   onMemeObj(meme) {
     this.selected = meme;
 
-    this.ig.getInstagramImage(hex2a(meme[1]).split('/')[4]).subscribe((img) => {
+    this.ig.getInstagramImage(meme[1]).subscribe((img) => {
       this.image = this.domSanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(img));
       this.loading.notLoading();
       this.cd.detectChanges();
@@ -69,6 +69,10 @@ export class CreatedComponent implements OnInit {
   }
 
   goToOriginal() {
-    window.open(`http://instagr.am/p/${hex2a(this.selected[1]).split('/')[4]}`, '_blank');
+    window.open(`http://instagr.am/p/${this.selected[1]}`, '_blank');
+  }
+
+  selectMemeId(memeId) {
+    this.memeId = memeId;
   }
 }

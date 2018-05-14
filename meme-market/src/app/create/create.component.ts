@@ -1,3 +1,4 @@
+import { PopupService } from './../popup.service';
 import { Web3Service } from './../web3.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
@@ -12,9 +13,10 @@ export class CreateComponent implements OnInit {
   link: any;
   id: any;
   image: any;
+  name: any;
 
   constructor(private ig: InstagramService, private cd: ChangeDetectorRef,
-    private domSanitizer: DomSanitizer, private web3: Web3Service) { }
+    private domSanitizer: DomSanitizer, private web3: Web3Service, private popup: PopupService) { }
 
   ngOnInit() {
   }
@@ -32,10 +34,12 @@ export class CreateComponent implements OnInit {
   }
 
   create() {
+    const name = this.name || this.ig.getId(this.link);
     this.web3.contract.subscribe((c) => {
       this.web3.account.subscribe((a) => {
-        c.create(this.link, this.link, a,  {gas: 400000}, (_e, r) => {
+        c.create(name, this.ig.getId(this.link), a,  {from: a, gas: 400000}, (_e, r) => {
           console.log('your meme is being created:', r);
+          this.popup.show();
           this.cd.detectChanges();
         });
       });

@@ -1,0 +1,19 @@
+.blog {
+    min-width: 100%;
+    min-height: 100%;
+    display: flex;
+}
+
+.preview {
+    min-width: 50%;
+    min-height: 100%;
+    background: linear-gradient(white, red);
+}
+
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}

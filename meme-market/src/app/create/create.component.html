@@ -3,6 +3,9 @@
     <div class="link">
       <input type="text" placeholder="ADD LINK" [(ngModel)]="link" (ngModelChange)="parseLink()">
     </div>
+    <div class="name">
+        <input type="text" placeholder="ADD NAME" [(ngModel)]="name" maxlength="32">
+      </div>
     <span class="submit" (click)="create()">CREATE</span>
   </div>
   <div class="preview">

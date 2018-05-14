@@ -18,7 +18,9 @@ export class ListElementComponent implements OnInit {
     this.web3.contract.subscribe((c) => {
       c.deed(this.memeId, (_e, r) => {
           this.meme = r;
-          /* this.meme[4] = format(new Date(r[4]*1000), 'MM/DD/YYYY HH:MM'); */
+          this.meme[0] = this.web3._web3.toAscii(this.meme[0]).replace(/\0/g, '');
+          this.meme[1] = this.web3._web3.toAscii(this.meme[1]).replace(/\0/g, '');
+          console.log(this.meme);
           this.cd.detectChanges();
       });
   });
