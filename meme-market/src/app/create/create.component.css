@@ -11,7 +11,7 @@
     max-width: 50%;
     min-height: 100%;
     max-height: 100%;
-    background: linear-gradient(white, red);
+    background: linear-gradient(120deg, white 30%, red 100%);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -33,38 +33,14 @@
 }
 
 .submit { 
-    color: white; 
+    color: red; 
     font: bold 120px Helvetica, Arial, Sans-Serif;
-    text-shadow: 1px 1px red, 
-                 2px 2px red, 
-                 3px 3px red, 
-                 4px 4px red, 
-                 5px 5px red, 
-                 5px 5px red, 
-                 6px 6px red;
     transition: all 0.12s ease-out;
 }
 .submit:hover {
     cursor: url(../../assets/cursor-pointer.png), auto;
     font-size: 200px;
     position: relative; 
-    top: -7px; 
-    left: -7px; 
-    text-shadow: 1px 1px red, 
-                 2px 2px red, 
-                 3px 3px red, 
-                 4px 4px red, 
-                 5px 5px red, 
-                 5px 5px red, 
-                 6px 6px red, 
-                 7px 7px red, 
-                 8px 8px red, 
-                 9px 9px red, 
-                 10px 10px red,
-                 11px 11px red,
-                 12px 12px red,
-                 13px 13px red,
-                 14px 14px red;
 }
 
 .name, .link {

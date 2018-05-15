@@ -1,3 +1,4 @@
+import { OldAbstractBoxComponent } from './old-abstract-box/abstract-box.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -54,7 +55,8 @@ export function initWeb3(web3: Web3Service) {
     FaqComponent,
     BlogComponent,
     LoadingComponent,
-    PopupComponent
+    PopupComponent,
+    OldAbstractBoxComponent
   ],
   imports: [
     BrowserModule,

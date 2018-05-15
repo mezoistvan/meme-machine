@@ -1,30 +1,23 @@
 .cover {
     width: 100%;
     height: 100%;
-    background-image: url('../../assets/memphis2.jpg');
 }
 
 .info-wrapper {
-    margin-left: 10vw;
-    margin-right: 10vw;
-    padding-top: 15vh;
-    padding-bottom: 15vh;
+    width: 100%;
     height: 100%;
     box-sizing: border-box;
 }
 
 .welcome {
-    display: flex;
-    flex-direction: column;
     height: 100%;
     width: 100%;
-    align-items: center;
-    justify-content: center;
+    position: relative;
 }
 
 .logo {
     color: white; 
-    font: bold 160px Helvetica, Arial, Sans-Serif;
+    font: bold 360px Helvetica, Arial, Sans-Serif;
     text-shadow: 1px 1px red, 
                  2px 2px red, 
                  3px 3px red, 
@@ -47,7 +40,15 @@
 }
 
 .text {
-    flex: 1;
+    position: absolute;
     font: 70px Helvetica, Arial, Sans-Serif;
-    padding-left: 70px;
+    width: 400px;
+    top: 50%;
+    left: 85%;
+    transform: rotate(-90deg);
+}
+
+a:link, a:visited, a:hover, a:active {
+    text-decoration: none;
+    color: black;
 }
