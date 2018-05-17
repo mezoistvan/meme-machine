@@ -1,0 +1,57 @@
+.wrapper {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    position: relative;
+}
+
+.image {
+    object-fit: cover;
+    width: 100%;
+    cursor: url(../../assets/cursor-pointer.png), auto;
+}
+
+.own { 
+    color: red; 
+    font: bold 12px Helvetica, Arial, Sans-Serif;
+    transition: all 0.12s ease-out;
+}
+.own:hover {
+    cursor: url(../../assets/cursor-pointer.png), auto;
+    font-size: 20px;
+    position: relative; 
+}
+
+.action {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.price {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.eth, .dollar {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+
+    font: bold 70px Helvetica, Arial, Sans-Serif;
+}
+
+.currency {
+    color: blue;
+}
+
+app-abstract-box {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}

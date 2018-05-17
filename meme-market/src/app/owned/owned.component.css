@@ -1,26 +1,57 @@
-.owned {
+.created {
     min-width: 100%;
     min-height: 100%;
+    max-width: 100%;
+    max-height: 100%;
     display: flex;
 }
 
 .preview {
     min-width: 50%;
+    max-width: 50%;
     min-height: 100%;
-    background: linear-gradient(white, red);
+    max-height: 100%;
+    background: linear-gradient(120deg, white 30%, red 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .form {
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
+
+    overflow-y: auto;
 }
 
-.asd {
+app-list-element {
+    width: 100%;
+}
+
+.own-wrapper {
+    height: 50%;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     position: fixed;
+    top: 50%;
+    z-index: 101;
+}
+
+app-info-box {
     width: 100%;
     height: 100%;
-    font: 270px Helvetica, Arial, Sans-Serif;
+    margin-left: 70px;
+    margin-right: 70px;
+    box-sizing: border-box;
+    padding-top: 70px;
+    padding-bottom: 70px;
+}
+
+.image {
+    max-width: 100%;
+    height: 100%;
+    object-fit: contain;
+    cursor: url(../../assets/cursor-pointer.png), auto;
 }

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-footer',
@@ -6,10 +7,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./footer.component.css']
 })
 export class FooterComponent implements OnInit {
+  url: any;
 
-  constructor() { }
+  constructor(private ar: Router, private cd: ChangeDetectorRef) { }
 
   ngOnInit() {
+    this.ar.events.subscribe(r => {
+      if (r instanceof NavigationEnd) {
+        this.url = r.url;
+        this.cd.detectChanges();
+      }
+    });
   }
 
 }

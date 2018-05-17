@@ -29,27 +29,38 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 todo:
         loading image homokora (pls jozsi)
-        bg image for opening screen (pls jozsi)
+    NO  bg image for opening screen (pls jozsi)
         loading image indicator is buggy
     OK  scrollable list in created
-    NO  call own function in created
+        call own function in created
         popup for success/error messages
-    ??  owned screen set up (scroll list)
+    OK  owned screen set up (scroll list)
     OK  browse screen set up (scroll list)
     OK  call own function in browse
     OK  create fn bug in solidity(?) fix ### ONLY CONTRACT OWNER CAN CREATE??? FIX
     OK  modify solidity to take tax
-        header should update on every route visit
-        set init price and buy price
+    OK  header should update on every route visit
+    ??  set init price and buy price
         reddit
         imgur
         instagram short links
-        DESIGN
+        insta videók + több kép
+    ..  DESIGN
+        created screen in solidity
+        new list design
+        browse screen: cant own already owned
+        owned screen: show current price
+        created screen: show all money made from that meme
+        popup: connect to mainnet / install metamask 
+        popup: your meme is being created
+        popup: transaction has been sent
+        testing
+
+        REDESIGN THE LIST :((((((((((((((((((
 
         blog post for start
         medium article describing things (how the money is distributed, how to create, how to buy)
-        del faqcomponent and blogcomponent and just link to medium
         mememarket twitter
-        fix welcome screen + add welcome cursor
+    OK  fix welcome screen + add welcome cursor
 
         KIBU: artmarket wl

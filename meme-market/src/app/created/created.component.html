@@ -1,16 +1,5 @@
-<div class="created">
-    <div class="form" (mouseover)="hideInfo()">
-      <app-list-element
-        *ngFor="let memeId of list"
-        [memeId]="memeId"
-        (memeObj)="onMemeObj($event)"
-        (click)="selectMemeId(memeId)"
-      ></app-list-element>
-    </div>
-    <div class="preview" (mouseover)="showInfo()">
-      <img class="image" *ngIf="image" [src]="image" (click)="goToOriginal()">
-      <div class="own-wrapper" *ngIf="visibleInfo && memePrice">
-          <app-info-box [memeId]="memeId"></app-info-box>
-        </div>
-    </div>
-  </div>
+<div class="owned">
+  <div class="form"></div>
+  <div class="preview"></div>
+  <div class="asd">THIS IS NOT WORKING YET</div>
+</div>

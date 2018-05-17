@@ -1,14 +1,14 @@
 <div class="footer">
     <div class="menu">
-      <a routerLink="browse">BROWSE</a>
+      <a routerLink="/"  [ngClass]="{active: url === '/'}">MEME MARKET</a>
       </div> 
       <div class="blog">
-          <a routerLink="blog">BLOG</a>
+          <a routerLink="blog"  [ngClass]="{active: url === '/blog'}">BLOG</a>
       </div>
       <div class="faq">
-          <a routerLink="faq">FAQ</a>
+          <a routerLink="faq"  [ngClass]="{active: url === '/faq'}">FAQ</a>
       </div> 
     <div class="logo">
-        <a routerLink="create">CREATE</a>
+        <a routerLink="create"  [ngClass]="{active: url === '/create'}">CREATE</a>
     </div>
   </div>

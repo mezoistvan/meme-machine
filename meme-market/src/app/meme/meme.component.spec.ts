@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OwnedComponent } from './owned.component';
+import { MemeComponent } from './meme.component';
 
-describe('OwnedComponent', () => {
-  let component: OwnedComponent;
-  let fixture: ComponentFixture<OwnedComponent>;
+describe('MemeComponent', () => {
+  let component: MemeComponent;
+  let fixture: ComponentFixture<MemeComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ OwnedComponent ]
+      declarations: [ MemeComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OwnedComponent);
+    fixture = TestBed.createComponent(MemeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

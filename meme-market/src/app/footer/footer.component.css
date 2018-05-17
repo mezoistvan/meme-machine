@@ -27,3 +27,7 @@ a:link, a:visited, a:hover, a:active {
     display: flex;
     justify-content: flex-end;
 }
+
+.active {
+    color: red !important;
+}
