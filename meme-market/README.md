@@ -57,6 +57,8 @@ todo:
         testing
 
         REDESIGN THE LIST :((((((((((((((((((
+        DESIGN
+        web3 for browsers without web3
 
         blog post for start
         medium article describing things (how the money is distributed, how to create, how to buy)
