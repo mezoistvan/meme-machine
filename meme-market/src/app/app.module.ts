@@ -23,6 +23,7 @@ import { LoadingComponent } from './loading/loading.component';
 import { PopupComponent } from './popup/popup.component';
 import { Browse2Component } from './browse2/browse2.component';
 import { MemeComponent } from './meme/meme.component';
+import { MemeDetailsComponent } from './meme-details/meme-details.component';
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
@@ -32,6 +33,7 @@ const routes: Routes = [
   { path: 'blog', component: BlogComponent },
   { path: 'faq', component: FaqComponent },
   { path: 'owned', component: OwnedComponent },
+  { path: ':id', component: MemeDetailsComponent, outlet: 'popup' },
   { path: '**', component: WelcomeComponent }
 ];
 
@@ -60,7 +62,8 @@ export function initWeb3(web3: Web3Service) {
     PopupComponent,
     OldAbstractBoxComponent,
     Browse2Component,
-    MemeComponent
+    MemeComponent,
+    MemeDetailsComponent
   ],
   imports: [
     BrowserModule,

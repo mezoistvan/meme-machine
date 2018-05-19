@@ -1,0 +1,116 @@
+.browse {
+    min-width: 100%;
+    min-height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+
+    background: linear-gradient(120deg, rgba(0,0,0,0) 30%, blue 80%);
+}
+
+.preview {
+    min-width: 50%;
+    max-width: 50%;
+    min-height: 100%;
+    max-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.form {
+    width: 50%;
+    max-width: 50%;
+    background: linear-gradient(300deg, rgba(0,0,0,0) 30%, blue 80%);
+    display: flex;
+}
+
+.image {
+    max-width: 100%;
+    height: 100%;
+    object-fit: contain;
+    cursor: url(../../assets/cursor-pointer.png), auto;
+}
+
+.close {
+    position: fixed;
+    color: white;
+    top: 0;
+    left: 0;
+    font: italic 100px Helvetica, Arial, Sans-Serif;
+    z-index: 100;
+    cursor: url(../../assets/cursor-pointer.png), auto;
+    margin: 2%;
+}
+
+.info-box {
+    height: 75%;
+    width: 100%;
+    align-self: flex-end;
+}
+
+.own { 
+    color: white; 
+    font: bold 200px Helvetica, Arial, Sans-Serif;
+    transition: all 0.12s ease-out;
+    text-shadow: 1px 1px red, 
+    2px 2px red, 
+    3px 3px red, 
+    4px 4px red, 
+    5px 5px red, 
+    5px 5px red, 
+    6px 6px red, 
+    7px 7px red, 
+    8px 8px red, 
+    9px 9px red, 
+    10px 10px red,
+    11px 11px red,
+    12px 12px red,
+    13px 13px red,
+    14px 14px red;
+}
+.own:hover {
+    cursor: url(../../assets/cursor-pointer.png), auto;
+    font-size: 300px;
+    position: relative; 
+}
+
+.action {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.price {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.eth, .dollar {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+
+    font: bold 100px Helvetica, Arial, Sans-Serif;
+    color: white;
+
+    text-shadow: 1px 1px blue, 
+                 2px 2px blue, 
+                 3px 3px blue, 
+                 4px 4px blue, 
+                 5px 5px blue, 
+                 5px 5px blue, 
+                 6px 6px blue;
+}
+
+.currency {
+    color: white;
+}

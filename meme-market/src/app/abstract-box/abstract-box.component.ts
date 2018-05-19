@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-abstract-box',
@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./abstract-box.component.css']
 })
 export class AbstractBoxComponent implements OnInit {
+
+  @Input() gradient = true;
 
   constructor() { }
 

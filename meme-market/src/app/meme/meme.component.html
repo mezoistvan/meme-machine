@@ -1,12 +1,14 @@
 <div #imageEl class="wrapper" (mouseover)="bringToTop()" (mouseleave)="goBack()">
     <img class="image" *ngIf="image" [src]="image" (click)="goToOriginal()">
-    <app-abstract-box *ngIf="showBox">
+<!--     <app-abstract-box *ngIf="!showBox" [gradient]="false">
+        <div class="eth">{{memePrice}}<span class="currency">Ξ</span></div>
+    </app-abstract-box>
+ -->    <app-abstract-box class="big" *ngIf="showBox" (click)="own()">
         <div class="action">
-            <span class="own" (click)="own()">OWN</span>
+            <span class="own">SEE</span>
           </div>
-          <div class="price">
+        <div class="price-eth">
             <div class="eth">{{memePrice}}<span class="currency">Ξ</span></div>
-            <div class="dollar">{{memePriceUSD}}<span class="currency">$</span></div>
-          </div>
-          </app-abstract-box>
+        </div>
+    </app-abstract-box>
 </div>

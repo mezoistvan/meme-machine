@@ -21,3 +21,10 @@ app-loading {
     top: calc(50% - 100px);
     left: calc(50% - 200px);
 }
+
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10000000;
+}

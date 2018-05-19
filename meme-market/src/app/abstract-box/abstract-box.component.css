@@ -1,9 +1,12 @@
 .box {
     width: 100%;
     height: 100%;
-    background: radial-gradient(blue 0%, rgba(0, 0, 0, 0) 70%);
     display: flex;
     flex-direction: column;
     position: relative;
     z-index: 10;
+}
+
+.gradient {
+    background: radial-gradient(blue 0%, rgba(0, 0, 0, 0) 70%);
 }

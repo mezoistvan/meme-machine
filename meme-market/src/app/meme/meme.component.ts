@@ -1,9 +1,10 @@
+import { Router } from '@angular/router';
 import { CoinmarketcapService } from './../coinmarketcap.service';
 import { LoadingService } from './../loading.service';
 import { Web3Service } from './../web3.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { InstagramService } from './../instagram.service';
-import { Component, OnInit, Input, ChangeDetectorRef, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef, ElementRef, Renderer2, ViewChild, NgZone } from '@angular/core';
 
 @Component({
   selector: 'app-meme',
@@ -22,7 +23,7 @@ export class MemeComponent implements OnInit {
 
   constructor(private ig: InstagramService, private domSanitizer: DomSanitizer,
     private web3: Web3Service, private cd: ChangeDetectorRef, private loading: LoadingService,
-    private cmc: CoinmarketcapService, private el: ElementRef, private r2: Renderer2) { }
+    private el: ElementRef, private r2: Renderer2, private router: Router, private zone: NgZone) { }
 
   ngOnInit() {
     this.cd.detectChanges();
@@ -42,10 +43,6 @@ export class MemeComponent implements OnInit {
 
           this.memePrice = this.web3._web3.fromWei(this.meme[3]);
 
-          this.cmc.convertEthToUsd(this.memePrice).subscribe((r) => {
-            this.memePriceUSD = r;
-          });
-
           this.cd.detectChanges();
       });
   });
@@ -59,5 +56,11 @@ export class MemeComponent implements OnInit {
   goBack() {
     this.showBox = false;
     this.cd.detectChanges();
+  }
+
+  own() {
+    this.zone.run(() => {
+      this.router.navigate([{ outlets: { popup: [this.memeId] } }]);
+    });
   }
 }

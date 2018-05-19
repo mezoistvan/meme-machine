@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { map, pluck } from 'rxjs/operators';
 
 @Injectable({
@@ -8,7 +8,9 @@ import { map, pluck } from 'rxjs/operators';
 })
 export class CoinmarketcapService {
 
-  constructor(private http: HttpClient) { }
+  ethUsd = new BehaviorSubject<any>(0);
+
+  constructor(private http: HttpClient) {}
 
   convertEthToUsd(ether): Observable<any> {
     return this.http.get(`https://api.coinmarketcap.com/v2/ticker/1027/`).pipe(

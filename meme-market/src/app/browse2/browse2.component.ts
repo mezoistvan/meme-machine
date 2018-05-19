@@ -26,7 +26,8 @@ export class Browse2Component implements OnInit {
               }
               this.shuffleArray(this.list);
               this.list.splice(99);
-              this.listShown = this.list.slice(0, 3);
+              this.listShown = this.list.concat(this.list).concat(this.list)
+                .concat(this.list).concat(this.list).concat(this.list).concat(this.list);
               this.cd.detectChanges();
           });
       });

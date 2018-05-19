@@ -1,0 +1,37 @@
+<!-- <div class="browse">
+    <div class="form" (mouseover)="hideInfo()">
+        <app-list-element
+          [memeId]="memeId"
+        ></app-list-element>
+      </div>
+      <div class="preview" (mouseover)="showInfo()">
+        <img class="image" *ngIf="image" [src]="image" (click)="goToOriginal()">
+        <div class="own-wrapper" *ngIf="visibleInfo && memePrice">
+            <app-info-box [memeId]="memeId"></app-info-box>
+          </div>
+      </div>
+</div> -->
+
+<div class="browse">
+  <div class="form">
+        <div class="close" (click)="close()">
+          close
+        </div>
+        <div class="info-box">
+            <app-abstract-box>
+              <div class="action">
+                  <span class="own" (click)="own()">BUY</span>
+                </div>
+                <div class="price">
+                  <div class="eth">{{memePrice}}<span class="currency">Ξ</span></div>
+                  <div class="dollar">{{memePriceUSD}}<span class="currency">$</span></div>
+                </div>
+            </app-abstract-box>
+        </div>
+  </div>
+  <div class="preview">
+      <app-abstract-box>
+          <img class="image" *ngIf="image" [src]="image" (click)="goToOriginal()">
+      </app-abstract-box>
+  </div>
+</div>

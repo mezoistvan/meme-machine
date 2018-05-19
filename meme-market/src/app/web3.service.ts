@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
+import * as web3 from 'web3';
 
 @Injectable({
   providedIn: 'root'
@@ -796,7 +797,7 @@ export class Web3Service {
 
     init() {
         this._window = window as any;
-        this._web3 = this._window.web3;
+        this._web3 = this._window.web3 || web3;
         if (typeof this._window.web3 !== 'undefined') {
             this._web3.version.getNetwork((_err, res) => {
                 if (_err) {
@@ -808,15 +809,15 @@ export class Web3Service {
                     console.error('Please connect to the Ropsten network');
                     return;
                 }
-
-                this._contract.next(this._web3.eth.contract(this._abi).at(this._contractAddress));
-                console.log('contract successfully initialized', this._contract);
             });
         } else {
             console.error('no web3 on window');
         }
 
-        if (typeof this._window.web3 !== 'undefined') {
+        this._contract.next(this._web3.eth.contract(this._abi).at(this._contractAddress));
+        console.log('contract successfully initialized', this._contract);
+
+        if (typeof this._web3 !== 'undefined') {
             this._web3.eth.getAccounts((_err, res) => {
                 if (_err) {
                     console.error(_err);
