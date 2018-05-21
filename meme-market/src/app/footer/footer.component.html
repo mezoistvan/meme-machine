@@ -1,14 +1,8 @@
 <div class="footer">
-    <div class="menu">
-      <a routerLink="/"  [ngClass]="{active: url === '/'}">MEME MARKET</a>
-      </div> 
-      <div class="blog">
-          <a routerLink="blog"  [ngClass]="{active: url === '/blog'}">BLOG</a>
-      </div>
       <div class="faq">
           <a routerLink="faq"  [ngClass]="{active: url === '/faq'}">FAQ</a>
       </div> 
-    <div class="logo">
-        <a routerLink="create"  [ngClass]="{active: url === '/create'}">CREATE</a>
-    </div>
+      <div class="created">
+        <a routerLink="owned" [ngClass]="{active: url === '/owned'}">OWN {{createdList.length}}</a>
+      </div>
   </div>

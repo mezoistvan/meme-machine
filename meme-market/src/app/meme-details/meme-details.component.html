@@ -13,7 +13,7 @@
 </div> -->
 
 <div class="browse">
-  <div class="form">
+  <div class="form" (mouseover)="hideInfo()">
         <div class="close" (click)="close()">
           close
         </div>
@@ -29,7 +29,13 @@
             </app-abstract-box>
         </div>
   </div>
-  <div class="preview">
+  <div class="preview" (mouseover)="showInfo()">
+      <div class="info" *ngIf="visibleInfo">
+        <div class="info-name">
+          {{meme[0]}}
+        </div>
+        <div class="info-id">{{memeId}}</div>
+      </div>
       <app-abstract-box>
           <img class="image" *ngIf="image" [src]="image" (click)="goToOriginal()">
       </app-abstract-box>

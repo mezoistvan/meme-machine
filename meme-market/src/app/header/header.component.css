@@ -15,20 +15,12 @@
 }
 
 a {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 24px;
+    font: italic 70px Arial, Helvetica, sans-serif;
+    color: blue;
+    text-decoration: none;
     font-weight: bold;
 }
 
-a:hover {
-    font-size: 100px;
-}
-
-a:link, a:visited, a:hover, a:active {
-    text-decoration: none;
-    color: blue;
-}
-
 .active {
-    color: red !important;
+    color: red;
 }

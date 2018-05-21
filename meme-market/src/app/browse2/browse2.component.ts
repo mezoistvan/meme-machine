@@ -18,18 +18,16 @@ export class Browse2Component implements OnInit {
 
   ngOnInit() {
     this.web3.contract.subscribe((c) => {
-      this.web3.account.subscribe((a) => {
-          c.countOfDeeds((_e, r) => {
-              this.count = r;
-              for (let i = 0; i < r; i++) {
-                this.list.push(i);
-              }
-              this.shuffleArray(this.list);
-              this.list.splice(99);
-              this.listShown = this.list.concat(this.list).concat(this.list)
-                .concat(this.list).concat(this.list).concat(this.list).concat(this.list);
-              this.cd.detectChanges();
-          });
+      c.countOfDeeds.call((_e, r) => {
+        this.count = r;
+        for (let i = 0; i < r; i++) {
+          this.list.push(i);
+        }
+        this.shuffleArray(this.list);
+        this.list.splice(99);
+        this.listShown = this.list.concat(this.list).concat(this.list)
+          .concat(this.list).concat(this.list).concat(this.list).concat(this.list);
+        this.cd.detectChanges();
       });
     });
   }
