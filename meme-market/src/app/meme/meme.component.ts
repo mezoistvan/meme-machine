@@ -60,7 +60,7 @@ export class MemeComponent implements OnInit {
 
   own() {
     this.zone.run(() => {
-      this.router.navigate([{ outlets: { popup: [this.memeId] } }]);
+      this.router.navigate([{ outlets: { popup: [+this.memeId] } }]);
     });
   }
 }
